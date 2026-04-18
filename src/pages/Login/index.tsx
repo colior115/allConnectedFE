@@ -1,11 +1,14 @@
 import { useState, type FormEvent } from 'react';
 import { useAuth } from '../../app/providers/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useBusinessDetails } from '../../hooks/useBusinessDetails';
 import '../Register/styles.scss';
 
 export default function Login() {
     const navigate = useNavigate();
+    const { businessId } = useParams();
     const { login } = useAuth();
+    const { business } = useBusinessDetails(businessId);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -18,7 +21,7 @@ export default function Login() {
 
         try {
             await login(email, password);
-            navigate('/');
+            navigate(`/${businessId}`);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An unknown error occurred');
         }
@@ -29,6 +32,7 @@ export default function Login() {
 
     return (
         <div className="auth-page">
+            {business && <h2 className="business-name">{business.name}</h2>}
             <form className="auth-form" onSubmit={handleSubmit}>
                 <h1>Login</h1>
 
@@ -63,7 +67,7 @@ export default function Login() {
                 </button>
 
                 <p className="auth-link">
-                    Don't have an account? <Link to="/register">Register</Link>
+                    Don't have an account? <Link to={`/${businessId}/register`}>Register</Link>
                 </p>
             </form>
         </div>

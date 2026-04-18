@@ -1,5 +1,7 @@
 import { supabase } from '../utils/supabase';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 export async function apiRequest(url: string, options?: RequestInit) {
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;
@@ -10,6 +12,6 @@ export async function apiRequest(url: string, options?: RequestInit) {
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
-  const response = await fetch(`/api${url}`, { ...options, headers });
+  const response = await fetch(`${BACKEND_URL}/api${url}`, { ...options, headers });
   return response.json();
 }

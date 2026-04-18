@@ -1,11 +1,14 @@
 import { useState, type FormEvent } from 'react';
 import { useAuth } from '../../app/providers/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useBusinessDetails } from '../../hooks/useBusinessDetails';
 import './styles.scss';
 
 export default function Register() {
   const navigate = useNavigate();
+  const { businessId } = useParams();
   const { register } = useAuth();
+  const { business } = useBusinessDetails(businessId);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +23,7 @@ export default function Register() {
     try {
       await register(email, password);
       setSuccess(true);
-      navigate('/');
+      navigate(`/${businessId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
@@ -30,6 +33,7 @@ export default function Register() {
 
   return (
     <div className="auth-page">
+      {business && <h2 className="business-name">{business.name}</h2>}
       <form className="auth-form" onSubmit={handleSubmit}>
         <h1>Register</h1>
 
@@ -71,7 +75,7 @@ export default function Register() {
         </button>
 
         <p className="auth-link">
-          Already have an account? <Link to="/login">Login</Link>
+          Already have an account? <Link to={`/${businessId}/login`}>Login</Link>
         </p>
       </form>
     </div>
