@@ -12,20 +12,20 @@ export const router = createBrowserRouter([
     element: <BusinessNotFound />
   },
   {
+    path: "/:businessId/login",
+    element: <Login />
+  },
+  {
+    path: "/:businessId/register",
+    element: <Register />
+  },
+  {
     path: "/:businessId",
     element: <BusinessLayout />,
     children: [
       {
         index: true,
         element: <ProtectedRoute><Home /></ProtectedRoute>
-      },
-      {
-        path: "login",
-        element: <Login />
-      },
-      {
-        path: "register",
-        element: <Register />
       }
     ]
   },

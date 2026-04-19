@@ -4,11 +4,11 @@ import BusinessNotFound from '../../pages/BusinessNotFound';
 
 export default function BusinessLayout() {
   const { businessId } = useParams();
-  const { business, loading } = useBusinessDetails(businessId);
+  const { business, loading, notFound } = useBusinessDetails(businessId);
 
   if (loading) return null;
 
-  if (!business || !business.id) return <BusinessNotFound />;
+  if (notFound || (!business || !business.id)) return <BusinessNotFound />;
 
   return <Outlet />;
 }

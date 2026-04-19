@@ -13,5 +13,12 @@ export async function apiRequest(url: string, options?: RequestInit) {
   };
 
   const response = await fetch(`${BACKEND_URL}/api${url}`, { ...options, headers });
+
+  if (!response.ok) {
+    const error = new Error(`API error ${response.status}: ${response.statusText}`) as Error & { status: number };
+    error.status = response.status;
+    throw error;
+  }
+
   return response.json();
 }

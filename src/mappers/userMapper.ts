@@ -1,5 +1,5 @@
-import type { UserDTO, CreateUserInputDTO, UpdateUserInputDTO } from '../dto/userDTO';
-import type { AppUser, CreateUserInput, UpdateUserInput } from '../models/user';
+import type { UserDTO, CreateUserInputDTO, UpdateUserInputDTO } from '../types/dto/userDTO';
+import type { AppUser, CreateUserInput, UpdateUserInput } from '../types/models/user';
 
 export function fromUserDTO(dto: UserDTO): AppUser {
   return {
