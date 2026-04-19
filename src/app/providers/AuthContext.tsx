@@ -6,12 +6,16 @@ import {
     register as registerService,
     logout as logoutService,
 } from '../../services/authService';
+import { getUserForBusiness } from '../../services/userService';
+import type { AppUser } from '../../types/models/user';
 
 interface AuthContextValue {
     user: User | null;
     session: Session | null;
+    appUser: AppUser | null;
     loading: boolean;
-    login: (email: string, password: string) => Promise<void>;
+    login: (email: string, password: string, businessId: string) => Promise<void>;
+    loadAppUser: (businessId: string, userId: string) => Promise<void>;
     register: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
 }
@@ -21,6 +25,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [session, setSession] = useState<Session | null>(null);
+    const [appUser, setAppUser] = useState<AppUser | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -35,15 +40,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } = supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
             setUser(session?.user ?? null);
+            if (!session?.user) setAppUser(null);
         });
 
         return () => subscription.unsubscribe();
     }, []);
 
-    async function login(email: string, password: string) {
+    async function login(email: string, password: string, businessId: string) {
         const data = await loginService(email, password);
+        const businessUser = await getUserForBusiness(businessId, data.user!.id);
         setSession(data.session);
         setUser(data.user);
+        setAppUser(businessUser);
+    }
+
+    async function loadAppUser(businessId: string, userId: string) {
+        const businessUser = await getUserForBusiness(businessId, userId);
+        setAppUser(businessUser);
     }
 
     async function register(email: string, password: string) {
@@ -56,10 +69,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await logoutService();
         setSession(null);
         setUser(null);
+        setAppUser(null);
     }
 
     return (
-        <AuthContext.Provider value={{ user, session, loading, login, register, logout }}>
+        <AuthContext.Provider value={{ user, session, appUser, loading, login, loadAppUser, register, logout }}>
             {children}
         </AuthContext.Provider>
     );

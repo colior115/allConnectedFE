@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import { apiRequest } from '../services/apiClient';
-
-interface BusinessDetails {
-  id: string;
-  name: string;
-}
+import { fromBusinessPublicDetailsDTO } from '../mappers/businessMapper';
+import type { BusinessPublicDetailsDTO } from '../types/dto/businessDTO';
+import type { BusinessPublicDetails } from '../types/models/business';
 
 export function useBusinessDetails(businessId: string | undefined) {
-  const [business, setBusiness] = useState<BusinessDetails | null>(null);
+  const [business, setBusiness] = useState<BusinessPublicDetails | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,7 +14,7 @@ export function useBusinessDetails(businessId: string | undefined) {
       return;
     }
     apiRequest(`/business/${businessId}/details`)
-      .then((data: BusinessDetails) => setBusiness(data))
+      .then((dto: BusinessPublicDetailsDTO) => setBusiness(fromBusinessPublicDetailsDTO(dto)))
       .catch((e) => {
         console.error(e);
         setBusiness(null);

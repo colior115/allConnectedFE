@@ -20,7 +20,7 @@ export default function Login() {
         setLoading(true);
 
         try {
-            await login(email, password);
+            await login(email, password, businessId ?? '');
             navigate(`/${businessId}`);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An unknown error occurred');
