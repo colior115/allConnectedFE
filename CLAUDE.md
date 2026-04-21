@@ -27,6 +27,45 @@ All routes are scoped under a `/:businessId` prefix. `BusinessLayout` (in `src/a
 ### State management
 No external state library. Global auth state lives in `AuthContext`; everything else uses local component state or custom hooks (e.g., `useBusinessDetails` in `src/hooks/`).
 
+### Repluggable plugin system
+The app is built on [Repluggable](https://github.com/wix/repluggable), a plugin architecture for React. Every feature lives in an `EntryPoint[]` (called a "package") that declares, contributes, and consumes typed APIs through the host's slot system. Packages are registered in `src/main.tsx` via `createAppHost`.
+
+**API naming convention:** `{Domain}{Layer}API` — e.g. `AuthDataServiceAPI`, `ScreensInfraAPI`.
+
+**Layers** (lower number = earlier initialization; a package may only depend on APIs from equal or lower layers):
+
+| Level | Name | Purpose | Example |
+|---|---|---|---|
+| 0 | `INFRA` | Infrastructure that the rest of the system builds on. Routing, main view composition, screen management. | `MainViewInfraAPI`, `ScreensInfraAPI` |
+| 60 | `DATA_SERVICE` | Calls to the backend REST API or Supabase auth. Raw data in, domain objects out. | `AuthDataServiceAPI`, `UserDataServiceAPI` |
+| 70 | `DERIVATIVE_STATE` | Derives computed/boolean state from DATA_SERVICE APIs. No side effects. | `isAdminConnected` — reads `UserDataServiceAPI` and returns whether the current user has role `admin` |
+| 80 | `FLOWS` | Orchestrates multi-step business logic using DERIVATIVE_STATE and DATA_SERVICE. | "Create user" flow — checks `isAdminConnected`, then calls `UserDataServiceAPI.createUser` |
+| 90 | `UI` | React components and screens contributed to the app. Consumes APIs from all lower layers. | Contribute a screen via `ScreensInfraAPI.contributeScreen` from a UI-layer entry point |
+| 100 | `APP` | Top-level app configuration and wiring that ties everything together. | |
+
+**Package structure** — every package follows this layout:
+
+```
+{domain}-package/
+  apis/               # All API definitions and factories for every layer
+    {domain}{Layer}API.ts          # SlotKey + TypeScript interface
+    create{Domain}{Layer}API.ts    # Factory that implements the API
+  entrypoints/        # Repluggable EntryPoint[] declarations
+    {domain}Package.tsx            # All entry points for the domain
+  components/         # Domain-specific React components (if any)
+  context/            # Domain-specific React context/providers (if any)
+  screens/            # Domain screens and their style files (if any)
+  index.ts            # Public barrel — only export what other packages need
+  {domain}Package.ts  # (optional root re-export if needed)
+```
+
+Rules:
+- All API files (`SlotKey` + interface + factory) live in `apis/`
+- All `EntryPoint[]` definitions live in `entrypoints/`
+- `index.ts` is the only public surface — imports from other packages must go through `index.ts`
+
+**Providers:** packages that need to wrap the React tree (e.g. `AuthProvider`) call `MainViewInfraAPI.contributeProvider`. Providers are nested outermost-first around all contributed components.
+
 ### Styling
 Components use inline styles with design tokens from `src/styles/theme/` (`colors.ts`, `typography.ts`). Global/reset styles are in `src/styles/global.css`. SASS is available but the primary pattern is CSS-in-JS via theme constants.
 

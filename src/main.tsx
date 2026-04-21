@@ -1,10 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { AppMainView, createAppHost } from 'repluggable'
-import { mainViewPackage } from './packages/main-view-package/mainViewPackage'
+import { mainViewPackage } from './packages/main-view-package'
+import { ScreensPackage } from './packages/screens-package'
+import { AuthPackage } from './packages/auth-package'
+import { I18nPackage } from './packages/i18n-package'
 
 const host = createAppHost([
-  mainViewPackage
+  ...mainViewPackage,
+  ...I18nPackage,
+  ...ScreensPackage,
+  ...AuthPackage,
 ],
 {
     monitoring: {},
@@ -28,10 +34,6 @@ const host = createAppHost([
       {
         level: 90,
         name: 'UI',
-      },
-      {
-        level: 100,
-        name: 'APP',
       },
     ],
   })
