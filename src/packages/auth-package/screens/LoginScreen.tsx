@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Text, Title } from '../../../components';
+import Button from '../../../components/Button';
+import Input from '../../../components/Input';
+import Label from '../../../components/Label';
+import { colors } from '../../../styles/theme/colors';
 import type { ScreenWithNavigationProps } from '../../screens-package';
 import { useAuth } from '../context/AuthContext';
-import Label from '../../../components/Label';
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
-import { colors } from '../../../styles/theme/colors';
-import { typography } from '../../../styles/theme/typography';
-import { Text, Title } from '../../../components';
 
 interface Props extends ScreenWithNavigationProps {
   onLogin: (email: string, password: string) => Promise<void>;

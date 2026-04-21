@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { ScreenWithNavigationProps } from '../../screens-package';
-import Label from '../../../components/Label';
-import Input from '../../../components/Input';
+import { Text, Title } from '../../../components';
 import Button from '../../../components/Button';
+import Input from '../../../components/Input';
+import Label from '../../../components/Label';
 import { colors } from '../../../styles/theme/colors';
 import { typography } from '../../../styles/theme/typography';
-import { Title, Text } from '../../../components';
+import type { ScreenWithNavigationProps } from '../../screens-package';
 
 interface Props extends ScreenWithNavigationProps {
   onRegister: (email: string, password: string) => Promise<void>;
