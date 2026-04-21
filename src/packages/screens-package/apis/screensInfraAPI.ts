@@ -9,6 +9,13 @@ export const ScreensInfraAPI: SlotKey<ScreensInfraAPI> = {
   layer: 'INFRA',
 };
 
+export type ScreenGuardProps = {
+  navigate: (screen: string) => void;
+  children: ReactNode;
+};
+
+export type ScreenGuardComponent = (props: ScreenGuardProps) => ReactNode;
+
 export interface ScreensInfraAPI {
   components: {
     BaseScreen: typeof BaseScreen;
@@ -20,16 +27,20 @@ export interface ScreensInfraAPI {
   ) => void;
   getScreens: () => ContributedScreen[];
   getInitialScreen: () => string | undefined;
+  setScreenGuard: (guard: ScreenGuardComponent) => void;
+  getScreenGuard: () => ScreenGuardComponent | undefined;
 }
 
 export interface ContributedScreen {
   name: string;
   screen: (props: ScreenWithNavigationProps) => ReactNode;
+  protected?: boolean;
 }
 
 export type MainScreenWithNavigationProps = {
   getInitialScreen: () => string | undefined;
   getScreens: () => ContributedScreen[];
+  getScreenGuard: () => ScreenGuardComponent | undefined;
 };
 
 export type ScreenWithNavigationProps = {

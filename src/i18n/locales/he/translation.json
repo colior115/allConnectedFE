@@ -1,4 +1,22 @@
 {
-  "welcome": "ברוכים הבאים",
-  "login": "התחבר"
+  "auth": {
+    "email": "אימייל",
+    "password": "סיסמה",
+    "loginTitle": "התחברות",
+    "loginButton": "התחבר",
+    "loggingIn": "מתחבר…",
+    "registerTitle": "הרשמה",
+    "registerButton": "הרשם",
+    "registering": "נרשם…",
+    "noAccount": "אין לך חשבון?",
+    "alreadyHaveAccount": "כבר יש לך חשבון?",
+    "registerLink": "הרשמה",
+    "loginLink": "התחברות",
+    "registrationSuccess": "ההרשמה הצליחה! בדוק את האימייל שלך לאישור החשבון.",
+    "unknownError": "אירעה שגיאה לא ידועה",
+    "logout": "התנתק"
+  },
+  "dashboard": {
+    "title": "לוח בקרה"
+  }
 }

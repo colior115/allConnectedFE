@@ -1,4 +1,22 @@
 {
-  "welcome": "Welcome",
-  "login": "Login"
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "loginTitle": "Login",
+    "loginButton": "Login",
+    "loggingIn": "Logging in…",
+    "registerTitle": "Register",
+    "registerButton": "Register",
+    "registering": "Registering…",
+    "noAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "registerLink": "Register",
+    "loginLink": "Login",
+    "registrationSuccess": "Registration successful! Check your email to confirm your account.",
+    "unknownError": "An unknown error occurred",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Dashboard"
+  }
 }

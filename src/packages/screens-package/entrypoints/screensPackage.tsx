@@ -29,6 +29,7 @@ export const ScreensPackage: EntryPoint[] = [
           <MainScreenWithNavigation
             getInitialScreen={screensAPI.getInitialScreen}
             getScreens={screensAPI.getScreens}
+            getScreenGuard={screensAPI.getScreenGuard}
           />
         ),
       });

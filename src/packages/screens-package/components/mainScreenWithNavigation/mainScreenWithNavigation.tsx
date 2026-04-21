@@ -1,8 +1,10 @@
 import { useState, useCallback, useMemo } from 'react';
 import type { Navigation } from '../../types/navigation';
-import type { MainScreenWithNavigationProps } from '../../apis/screensInfraAPI';
+import type { MainScreenWithNavigationProps, ScreenGuardComponent } from '../../apis/screensInfraAPI';
 
-export function MainScreenWithNavigation({ getInitialScreen, getScreens }: MainScreenWithNavigationProps) {
+const PassThrough: ScreenGuardComponent = ({ children }) => <>{children}</>;
+
+export function MainScreenWithNavigation({ getInitialScreen, getScreens, getScreenGuard }: MainScreenWithNavigationProps) {
   const screens = getScreens();
   const initialScreen = getInitialScreen() ?? screens[0]?.name;
 
@@ -28,5 +30,8 @@ export function MainScreenWithNavigation({ getInitialScreen, getScreens }: MainS
 
   if (!currentScreen) return null;
 
-  return <>{currentScreen.screen({ navigation })}</>;
+  const isProtected = currentScreen.protected !== false;
+  const Guard = isProtected ? (getScreenGuard() ?? PassThrough) : PassThrough;
+
+  return <Guard navigate={navigate}>{currentScreen.screen({ navigation })}</Guard>;
 }

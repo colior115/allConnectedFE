@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { ScreenWithNavigationProps } from '../../screens-package';
 import { useAuth } from '../context/AuthContext';
-import type { AuthFlowsAPI } from '../apis/authFlowsAPI';
-import '../styles/auth.scss';
+import Label from '../../../components/Label';
+import Input from '../../../components/Input';
+import Button from '../../../components/Button';
+import { colors } from '../../../styles/theme/colors';
+import { typography } from '../../../styles/theme/typography';
 
 interface Props extends ScreenWithNavigationProps {
-  authFlowsAPI: AuthFlowsAPI;
+  onLogin: (email: string, password: string) => Promise<void>;
 }
 
-export function LoginScreen({ navigation, authFlowsAPI }: Props) {
+export function LoginScreen({ navigation, onLogin }: Props) {
+  const { t } = useTranslation();
   const { user, loading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,7 +22,7 @@ export function LoginScreen({ navigation, authFlowsAPI }: Props) {
 
   useEffect(() => {
     if (!loading && user) {
-      navigation.navigate('Home');
+      navigation.navigate('Dashboard');
     }
   }, [loading, user, navigation]);
 
@@ -26,10 +31,10 @@ export function LoginScreen({ navigation, authFlowsAPI }: Props) {
     setError(null);
     setSubmitting(true);
     try {
-      await authFlowsAPI.login(email, password);
-      navigation.navigate('Home');
+      await onLogin(email, password);
+      navigation.navigate('Dashboard');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      setError(err instanceof Error ? err.message : t('auth.unknownError'));
     } finally {
       setSubmitting(false);
     }
@@ -38,13 +43,44 @@ export function LoginScreen({ navigation, authFlowsAPI }: Props) {
   if (loading) return null;
 
   return (
-    <div className="auth-page">
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <h1>Login</h1>
-        {error && <p className="auth-error">{error}</p>}
-        <div className="auth-field">
-          <label htmlFor="email">Email</label>
-          <input
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: '100vh',
+      paddingInline: '1rem',
+      paddingBlock: '1rem',
+      background: colors.background,
+    }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+          width: '100%',
+          maxWidth: '400px',
+          paddingInline: '2rem',
+          paddingBlock: '2rem',
+          border: `1px solid ${colors.border}`,
+          borderRadius: '8px',
+          background: '#fff',
+        }}
+      >
+        <h1 style={{ margin: '0 0 0.5rem', ...typography.h3, fontFamily: typography.fontFamily, color: colors.textPrimary }}>
+          {t('auth.loginTitle')}
+        </h1>
+
+        {error && (
+          <p style={{ margin: 0, fontSize: typography.small.fontSize, color: colors.error, fontFamily: typography.fontFamily }}>
+            {error}
+          </p>
+        )}
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <Label htmlFor="email">{t('auth.email')}</Label>
+          <Input
             id="email"
             type="email"
             value={email}
@@ -53,9 +89,10 @@ export function LoginScreen({ navigation, authFlowsAPI }: Props) {
             autoComplete="email"
           />
         </div>
-        <div className="auth-field">
-          <label htmlFor="password">Password</label>
-          <input
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <Label htmlFor="password">{t('auth.password')}</Label>
+          <Input
             id="password"
             type="password"
             value={password}
@@ -64,14 +101,16 @@ export function LoginScreen({ navigation, authFlowsAPI }: Props) {
             autoComplete="current-password"
           />
         </div>
-        <button type="submit" disabled={submitting}>
-          {submitting ? 'Logging in…' : 'Login'}
-        </button>
-        <p className="auth-link">
-          Don't have an account?{' '}
-          <button type="button" className="auth-link-btn" onClick={() => navigation.navigate('Register')}>
-            Register
-          </button>
+
+        <Button type="submit" disabled={submitting}>
+          {submitting ? t('auth.loggingIn') : t('auth.loginButton')}
+        </Button>
+
+        <p style={{ margin: 0, fontSize: typography.small.fontSize, textAlign: 'center', fontFamily: typography.fontFamily, color: colors.textSecondary }}>
+          {t('auth.noAccount')}{' '}
+          <Button type="button" variant="ghost" onClick={() => navigation.navigate('Register')}>
+            {t('auth.registerLink')}
+          </Button>
         </p>
       </form>
     </div>

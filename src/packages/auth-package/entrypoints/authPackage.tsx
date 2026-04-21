@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { EntryPoint } from 'repluggable';
 import { MainViewInfraAPI } from '../../main-view-package';
 import { ScreensInfraAPI } from '../../screens-package';
@@ -9,7 +10,7 @@ import { AuthFlowsAPI } from '../apis/authFlowsAPI';
 import { createAuthFlowsAPI } from '../apis/createAuthFlowsAPI';
 import { SiteContextInfraAPI } from '../apis/siteContextInfraAPI';
 import { createSiteContextInfraAPI } from '../apis/createSiteContextInfraAPI';
-import { AuthProvider } from '../context/AuthContext';
+import { AuthProvider, useAuth } from '../context/AuthContext';
 import { LoginScreen } from '../screens/LoginScreen';
 import { RegisterScreen } from '../screens/RegisterScreen';
 
@@ -23,7 +24,7 @@ export const AuthPackage: EntryPoint[] = [
     },
 
     getDependencyAPIs() {
-      return [MainViewInfraAPI];
+      return [MainViewInfraAPI, ScreensInfraAPI];
     },
 
     attach(shell) {
@@ -32,12 +33,22 @@ export const AuthPackage: EntryPoint[] = [
 
     extend(shell) {
       const mainViewAPI = shell.getAPI(MainViewInfraAPI);
+      const screensAPI = shell.getAPI(ScreensInfraAPI);
       const siteContextAPI = shell.getAPI(SiteContextInfraAPI);
 
       mainViewAPI.contributeProvider(shell, {
         provider: (children) => (
           <AuthProvider siteContextAPI={siteContextAPI}>{children}</AuthProvider>
         ),
+      });
+
+      screensAPI.setScreenGuard(({ navigate, children }) => {
+        const { user, loading } = useAuth();
+        useEffect(() => {
+          if (!loading && !user) navigate('Login');
+        }, [loading, user, navigate]);
+        if (loading) return null;
+        return user ? <>{children}</> : null;
       });
     },
   },
@@ -83,11 +94,20 @@ export const AuthPackage: EntryPoint[] = [
     },
 
     getDependencyAPIs() {
-      return [AuthDataServiceAPI, SiteContextInfraAPI, ScreensInfraAPI];
+      return [AuthDataServiceAPI, SiteContextInfraAPI];
     },
 
     attach(shell) {
       shell.contributeAPI(AuthFlowsAPI, () => createAuthFlowsAPI(shell));
+    },
+  },
+
+  {
+    name: 'AUTH_UI',
+    layer: 'UI',
+
+    getDependencyAPIs() {
+      return [AuthFlowsAPI, ScreensInfraAPI];
     },
 
     extend(shell) {
@@ -99,9 +119,10 @@ export const AuthPackage: EntryPoint[] = [
         shell,
         {
           name: 'Login',
+          protected: false,
           screen: ({ navigation }) => (
             <BaseScreen>
-              <LoginScreen navigation={navigation} authFlowsAPI={authFlowsAPI} />
+              <LoginScreen navigation={navigation} onLogin={authFlowsAPI.login} />
             </BaseScreen>
           ),
         },
@@ -110,9 +131,10 @@ export const AuthPackage: EntryPoint[] = [
 
       screensAPI.contributeScreen(shell, {
         name: 'Register',
+        protected: false,
         screen: ({ navigation }) => (
           <BaseScreen>
-            <RegisterScreen navigation={navigation} authFlowsAPI={authFlowsAPI} />
+            <RegisterScreen navigation={navigation} onRegister={authFlowsAPI.register} />
           </BaseScreen>
         ),
       });

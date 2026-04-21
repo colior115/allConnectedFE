@@ -1,13 +1,18 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { ScreenWithNavigationProps } from '../../screens-package';
-import type { AuthFlowsAPI } from '../apis/authFlowsAPI';
-import '../styles/auth.scss';
+import Label from '../../../components/Label';
+import Input from '../../../components/Input';
+import Button from '../../../components/Button';
+import { colors } from '../../../styles/theme/colors';
+import { typography } from '../../../styles/theme/typography';
 
 interface Props extends ScreenWithNavigationProps {
-  authFlowsAPI: AuthFlowsAPI;
+  onRegister: (email: string, password: string) => Promise<void>;
 }
 
-export function RegisterScreen({ navigation, authFlowsAPI }: Props) {
+export function RegisterScreen({ navigation, onRegister }: Props) {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -19,29 +24,61 @@ export function RegisterScreen({ navigation, authFlowsAPI }: Props) {
     setError(null);
     setSubmitting(true);
     try {
-      await authFlowsAPI.register(email, password);
+      await onRegister(email, password);
       setSuccess(true);
       navigation.navigate('Login');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      setError(err instanceof Error ? err.message : t('auth.unknownError'));
     } finally {
       setSubmitting(false);
     }
   }
 
   return (
-    <div className="auth-page">
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <h1>Register</h1>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: '100vh',
+      paddingInline: '1rem',
+      paddingBlock: '1rem',
+      background: colors.background,
+    }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+          width: '100%',
+          maxWidth: '400px',
+          paddingInline: '2rem',
+          paddingBlock: '2rem',
+          border: `1px solid ${colors.border}`,
+          borderRadius: '8px',
+          background: '#fff',
+        }}
+      >
+        <h1 style={{ margin: '0 0 0.5rem', ...typography.h3, fontFamily: typography.fontFamily, color: colors.textPrimary }}>
+          {t('auth.registerTitle')}
+        </h1>
+
         {success && (
-          <p className="auth-success">
-            Registration successful! Check your email to confirm your account.
+          <p style={{ margin: 0, fontSize: typography.small.fontSize, color: colors.success, fontFamily: typography.fontFamily }}>
+            {t('auth.registrationSuccess')}
           </p>
         )}
-        {error && <p className="auth-error">{error}</p>}
-        <div className="auth-field">
-          <label htmlFor="email">Email</label>
-          <input
+
+        {error && (
+          <p style={{ margin: 0, fontSize: typography.small.fontSize, color: colors.error, fontFamily: typography.fontFamily }}>
+            {error}
+          </p>
+        )}
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <Label htmlFor="email">{t('auth.email')}</Label>
+          <Input
             id="email"
             type="email"
             value={email}
@@ -50,9 +87,10 @@ export function RegisterScreen({ navigation, authFlowsAPI }: Props) {
             autoComplete="email"
           />
         </div>
-        <div className="auth-field">
-          <label htmlFor="password">Password</label>
-          <input
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <Label htmlFor="password">{t('auth.password')}</Label>
+          <Input
             id="password"
             type="password"
             value={password}
@@ -62,14 +100,16 @@ export function RegisterScreen({ navigation, authFlowsAPI }: Props) {
             minLength={6}
           />
         </div>
-        <button type="submit" disabled={submitting}>
-          {submitting ? 'Registering…' : 'Register'}
-        </button>
-        <p className="auth-link">
-          Already have an account?{' '}
-          <button type="button" className="auth-link-btn" onClick={() => navigation.navigate('Login')}>
-            Login
-          </button>
+
+        <Button type="submit" disabled={submitting}>
+          {submitting ? t('auth.registering') : t('auth.registerButton')}
+        </Button>
+
+        <p style={{ margin: 0, fontSize: typography.small.fontSize, textAlign: 'center', fontFamily: typography.fontFamily, color: colors.textSecondary }}>
+          {t('auth.alreadyHaveAccount')}{' '}
+          <Button type="button" variant="ghost" onClick={() => navigation.navigate('Login')}>
+            {t('auth.loginLink')}
+          </Button>
         </p>
       </form>
     </div>

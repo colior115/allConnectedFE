@@ -1,6 +1,6 @@
 import type { Shell, SlotKey } from 'repluggable';
 import { BaseScreen } from '../components/baseScreen/baseScreen';
-import type { ContributedScreen, ScreensInfraAPI } from './screensInfraAPI';
+import type { ContributedScreen, ScreenGuardComponent, ScreensInfraAPI } from './screensInfraAPI';
 
 export const screensSlotKey: SlotKey<ContributedScreen> = {
   name: 'contributedScreen',
@@ -13,10 +13,17 @@ export const initScreenSlotKey: SlotKey<string> = {
 export const createScreensInfraAPI = (shell: Shell): ScreensInfraAPI => {
   const componentsSlot = shell.declareSlot(screensSlotKey);
   const initScreenSlot = shell.declareSlot(initScreenSlotKey);
+  let screenGuard: ScreenGuardComponent | undefined;
 
   return {
     components: {
       BaseScreen,
+    },
+    setScreenGuard(guard) {
+      screenGuard = guard;
+    },
+    getScreenGuard() {
+      return screenGuard;
     },
     contributeScreen(fromShell, contribution, definedAsInitial = false) {
       if (definedAsInitial) {
