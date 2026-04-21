@@ -8,6 +8,7 @@ import { colors } from '../../../styles/theme/colors';
 import { typography } from '../../../styles/theme/typography';
 import type { ScreenWithNavigationProps } from '../../screens-package';
 
+
 interface Props extends ScreenWithNavigationProps {
   onRegister: (email: string, password: string) => Promise<void>;
 }
