@@ -5,9 +5,9 @@ import {
     login as loginService,
     register as registerService,
     logout as logoutService,
-} from '../../features/auth/services/authService';
-import { getUserForBusiness } from '../../features/user/services/userService';
-import type { AppUser } from '../../features/user/types/user';
+} from '../../packages/auth/services/authService';
+import { getUserForBusiness } from '../../packages/user/services/userService';
+import type { AppUser } from '../../packages/user/types/user';
 
 interface AuthContextValue {
     user: User | null;
