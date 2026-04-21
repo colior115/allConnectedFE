@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../../pages/Home";
-import Login from "../../pages/Login";
-import Register from "../../pages/Register";
-import BusinessNotFound from "../../pages/BusinessNotFound";
+import Home from "../../features/business/pages/Home";
+import Login from "../../features/auth/pages/Login";
+import Register from "../../features/auth/pages/Register";
+import BusinessNotFound from "../../features/business/pages/BusinessNotFound";
 import BusinessLayout from "./BusinessLayout";
 import ProtectedRoute from "./ProtectedRoute";
 

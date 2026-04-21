@@ -1,6 +1,6 @@
 import { Outlet, useParams } from 'react-router-dom';
-import { useBusinessDetails } from '../../hooks/useBusinessDetails';
-import BusinessNotFound from '../../pages/BusinessNotFound';
+import { useBusinessDetails } from '../../features/business/hooks/useBusinessDetails';
+import BusinessNotFound from '../../features/business/pages/BusinessNotFound';
 
 export default function BusinessLayout() {
   const { businessId } = useParams();

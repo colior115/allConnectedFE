@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
-import { useAuth } from '../../app/providers/AuthContext';
+import { useAuth } from '../../../../app/providers/AuthContext';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { useBusinessDetails } from '../../hooks/useBusinessDetails';
+import { useBusinessDetails } from '../../../business/hooks/useBusinessDetails';
 import './styles.scss';
 
 export default function Register() {

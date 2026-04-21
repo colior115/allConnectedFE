@@ -1,4 +1,4 @@
-import { EmptyState } from '../../components';
+import { EmptyState } from '../../../../components';
 
 export default function BusinessNotFound() {
   return (

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../app/providers/AuthContext";
-import { apiRequest } from "../../services/apiClient";
+import { useAuth } from "../../../../app/providers/AuthContext";
+import { apiRequest } from "../../../../services/apiClient";
 import "./styles.scss";
 
 export default function Home() {

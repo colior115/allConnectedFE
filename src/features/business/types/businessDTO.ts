@@ -1,4 +1,4 @@
-import type { CreateUserInputDTO } from './userDTO';
+import type { CreateUserInputDTO } from '../../user/types/userDTO';
 
 export type BusinessDTO = {
   id: string;

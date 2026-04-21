@@ -7,7 +7,7 @@ export type UserDTO = {
   role: UserRoleDTO;
 };
 
-export type UserRoleDTO = "admin" | "user" | "owner";
+export type UserRoleDTO = "admin" | "user";
 
 export type CreateUserInputDTO = Omit<UserDTO, "id" | "businessId">;
 

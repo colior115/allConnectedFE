@@ -3,13 +3,13 @@ import type {
   BusinessPublicDetailsDTO,
   CreateBusinessInputDTO,
   UpdateBusinessInputDTO,
-} from '../types/dto/businessDTO';
+} from '../types/businessDTO';
 import type {
   Business,
   BusinessPublicDetails,
   CreateBusinessInput,
   UpdateBusinessInput,
-} from '../types/models/business';
+} from '../types/business';
 
 export function fromBusinessDTO(dto: BusinessDTO): Business {
   return {
