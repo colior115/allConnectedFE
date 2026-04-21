@@ -18,5 +18,10 @@
   },
   "dashboard": {
     "title": "לוח בקרה"
+  },
+  "businessPicker": {
+    "title": "בחר עסק",
+    "loading": "טוען עסקים…",
+    "error": "טעינת עסקים נכשלה"
   }
 }

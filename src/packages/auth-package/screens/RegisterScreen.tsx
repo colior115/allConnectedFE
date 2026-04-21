@@ -6,6 +6,7 @@ import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { colors } from '../../../styles/theme/colors';
 import { typography } from '../../../styles/theme/typography';
+import { Title, Text } from '../../../components';
 
 interface Props extends ScreenWithNavigationProps {
   onRegister: (email: string, password: string) => Promise<void>;
@@ -60,20 +61,20 @@ export function RegisterScreen({ navigation, onRegister }: Props) {
           background: '#fff',
         }}
       >
-        <h1 style={{ margin: '0 0 0.5rem', ...typography.h3, fontFamily: typography.fontFamily, color: colors.textPrimary }}>
+        <Title size='large'>
           {t('auth.registerTitle')}
-        </h1>
+        </Title>
 
         {success && (
-          <p style={{ margin: 0, fontSize: typography.small.fontSize, color: colors.success, fontFamily: typography.fontFamily }}>
+          <Text size='small' color={colors.success}>
             {t('auth.registrationSuccess')}
-          </p>
+          </Text>
         )}
 
         {error && (
-          <p style={{ margin: 0, fontSize: typography.small.fontSize, color: colors.error, fontFamily: typography.fontFamily }}>
+          <Text size='small' color={colors.error}>
             {error}
-          </p>
+          </Text>
         )}
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>

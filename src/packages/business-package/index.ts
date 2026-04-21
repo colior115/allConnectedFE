@@ -1,3 +1,3 @@
 export { BusinessDataServiceAPI } from './apis/businessDataServiceAPI';
 export { BusinessPackage } from './entrypoints/businessPackage';
-export type { Business, BusinessPublic } from './types/business';
+export type { Business, BusinessPublic, UserBusiness, UserRole } from './types/business';

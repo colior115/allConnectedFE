@@ -7,6 +7,7 @@ import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { colors } from '../../../styles/theme/colors';
 import { typography } from '../../../styles/theme/typography';
+import { Text, Title } from '../../../components';
 
 interface Props extends ScreenWithNavigationProps {
   onLogin: (email: string, password: string) => Promise<void>;
@@ -22,7 +23,7 @@ export function LoginScreen({ navigation, onLogin }: Props) {
 
   useEffect(() => {
     if (!loading && user) {
-      navigation.navigate('Dashboard');
+      navigation.navigate('BusinessPicker');
     }
   }, [loading, user, navigation]);
 
@@ -32,7 +33,7 @@ export function LoginScreen({ navigation, onLogin }: Props) {
     setSubmitting(true);
     try {
       await onLogin(email, password);
-      navigation.navigate('Dashboard');
+      navigation.navigate('BusinessPicker');
     } catch (err) {
       setError(err instanceof Error ? err.message : t('auth.unknownError'));
     } finally {
@@ -68,14 +69,14 @@ export function LoginScreen({ navigation, onLogin }: Props) {
           background: '#fff',
         }}
       >
-        <h1 style={{ margin: '0 0 0.5rem', ...typography.h3, fontFamily: typography.fontFamily, color: colors.textPrimary }}>
+        <Title size='large'>
           {t('auth.loginTitle')}
-        </h1>
+        </Title>
 
         {error && (
-          <p style={{ margin: 0, fontSize: typography.small.fontSize, color: colors.error, fontFamily: typography.fontFamily }}>
+          <Text size='small' color={colors.error}>
             {error}
-          </p>
+          </Text>
         )}
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
@@ -106,12 +107,12 @@ export function LoginScreen({ navigation, onLogin }: Props) {
           {submitting ? t('auth.loggingIn') : t('auth.loginButton')}
         </Button>
 
-        <p style={{ margin: 0, fontSize: typography.small.fontSize, textAlign: 'center', fontFamily: typography.fontFamily, color: colors.textSecondary }}>
+        <Text size='small' color={colors.textSecondary}>
           {t('auth.noAccount')}{' '}
           <Button type="button" variant="ghost" onClick={() => navigation.navigate('Register')}>
             {t('auth.registerLink')}
           </Button>
-        </p>
+        </Text>
       </form>
     </div>
   );

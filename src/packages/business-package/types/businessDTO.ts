@@ -5,3 +5,10 @@ export interface BusinessDTO {
 }
 
 export type BusinessPublicDetailsDTO = Pick<BusinessDTO, 'id' | 'name'>;
+
+export type UserRole = 'admin' | 'user';
+
+export interface UserBusinessDTO {
+  business: BusinessDTO;
+  role: UserRole;
+}

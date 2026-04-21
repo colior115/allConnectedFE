@@ -18,5 +18,10 @@
   },
   "dashboard": {
     "title": "Dashboard"
+  },
+  "businessPicker": {
+    "title": "Choose a Business",
+    "loading": "Loading businesses…",
+    "error": "Failed to load businesses"
   }
 }
