@@ -99,7 +99,7 @@ export const AuthPackage: EntryPoint[] = [
 
     attach(shell) {
       shell.contributeAPI(AuthFlowsAPI, () => createAuthFlowsAPI(shell));
-    },
+    }
   },
 
   {

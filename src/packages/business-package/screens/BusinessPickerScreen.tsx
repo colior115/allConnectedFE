@@ -2,15 +2,16 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../auth-package';
 import type { ScreenWithNavigationProps } from '../../screens-package';
-import type { UserBusiness } from '../types/business';
+import type { Business, UserBusiness, UserRole } from '../types/business';
 import { colors } from '../../../styles/theme/colors';
 import { typography } from '../../../styles/theme/typography';
 
 interface Props extends ScreenWithNavigationProps {
   getUserBusinesses: (userEmail: string) => Promise<UserBusiness[]>;
+  onSelectBusiness: (business: Business, role: UserRole) => Promise<void>;
 }
 
-export function BusinessPickerScreen({ navigation, getUserBusinesses }: Props) {
+export function BusinessPickerScreen({ navigation, getUserBusinesses, onSelectBusiness }: Props) {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [businesses, setBusinesses] = useState<UserBusiness[]>([]);
@@ -21,8 +22,9 @@ export function BusinessPickerScreen({ navigation, getUserBusinesses }: Props) {
     if (!user?.email) return;
 
     getUserBusinesses(user.email)
-      .then(results => {
+      .then(async results => {
         if (results.length === 1) {
+          await onSelectBusiness(results[0].business, results[0].role);
           navigation.navigate('Dashboard');
         } else {
           setBusinesses(results);
@@ -34,6 +36,15 @@ export function BusinessPickerScreen({ navigation, getUserBusinesses }: Props) {
         setLoading(false);
       });
   }, [user?.email]);
+
+  const handleSelect = async (business: Business, role: UserRole) => {
+    try {
+      await onSelectBusiness(business, role);
+      navigation.navigate('Dashboard');
+    } catch {
+      setError(t('businessPicker.error'));
+    }
+  };
 
   if (loading) {
     return (
@@ -60,11 +71,11 @@ export function BusinessPickerScreen({ navigation, getUserBusinesses }: Props) {
         {businesses.map(({ business, role }) => (
           <li key={business.id}>
             <button
-              onClick={() => navigation.navigate('Dashboard')}
+              onClick={() => handleSelect(business, role)}
               style={{
                 width: '100%',
                 textAlign: 'start',
-                padding: '1rem',
+                paddingBlock: '1rem',
                 paddingInline: '1.25rem',
                 border: `1px solid ${colors.border}`,
                 borderRadius: '8px',

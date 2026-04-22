@@ -12,6 +12,7 @@ export interface BusinessDataServiceAPI {
   getAll(): Promise<Business[]>;
   getById(id: string): Promise<Business>;
   getUserBusinesses(userEmail: string): Promise<UserBusiness[]>;
+  connectToBusiness(id: string): Promise<string>;
   create(name: string): Promise<Business>;
   update(id: string, name: string): Promise<Business>;
   delete(id: string): Promise<Business>;

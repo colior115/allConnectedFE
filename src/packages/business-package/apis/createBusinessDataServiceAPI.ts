@@ -35,6 +35,11 @@ export const createBusinessDataServiceAPI = (): BusinessDataServiceAPI => ({
     return dtos.map(fromUserBusinessDTO);
   },
 
+  async connectToBusiness(id) {
+    const { token } = await apiRequest(`/business/${id}/connect`);
+    return token as string;
+  },
+
   async getById(id) {
     const dto: BusinessDTO = await apiRequest(`/business/${id}`);
     return fromDTO(dto);

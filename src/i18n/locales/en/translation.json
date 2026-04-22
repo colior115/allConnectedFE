@@ -23,5 +23,9 @@
     "title": "Choose a Business",
     "loading": "Loading businesses…",
     "error": "Failed to load businesses"
+  },
+  "noPermission": {
+    "title": "Access Denied",
+    "message": "You don't have permission to view this page."
   }
 }
