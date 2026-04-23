@@ -11,7 +11,10 @@ export interface BusinessPublic {
 
 export type UserRole = 'admin' | 'user';
 
-export interface UserBusiness {
+export type UserBusinessRelationType = 'employee' | 'client';
+
+export interface UserBusinessRelation {
   business: Business;
   role: UserRole;
+  type: UserBusinessRelationType;
 }

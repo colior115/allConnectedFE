@@ -1,5 +1,5 @@
 import type { SlotKey } from 'repluggable';
-import type { UserRole } from '../types/business';
+import type { UserRole, UserBusinessRelationType } from '../types/business';
 
 export const BusinessContextInfraAPI: SlotKey<BusinessContextInfraAPI> = {
   name: 'Business Context Infra API',
@@ -10,6 +10,7 @@ export const BusinessContextInfraAPI: SlotKey<BusinessContextInfraAPI> = {
 export interface BusinessContextValue {
   businessId: string;
   role: UserRole;
+  type: UserBusinessRelationType;
   token: string;
 }
 

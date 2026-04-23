@@ -1,7 +1,7 @@
 import { apiRequest } from '../../../services/apiClient';
 import type { BusinessDataServiceAPI } from './businessDataServiceAPI';
-import type { Business, BusinessPublic, UserBusiness } from '../types/business';
-import type { BusinessDTO, BusinessPublicDetailsDTO, UserBusinessDTO } from '../types/businessDTO';
+import type { Business, BusinessPublic, UserBusinessRelation } from '../types/business';
+import type { BusinessDTO, BusinessPublicDetailsDTO, UserBusinessRelationDTO } from '../types/businessDTO';
 
 const fromDTO = (dto: BusinessDTO): Business => ({
   id: dto.id,
@@ -14,9 +14,10 @@ const fromPublicDTO = (dto: BusinessPublicDetailsDTO): BusinessPublic => ({
   name: dto.name,
 });
 
-const fromUserBusinessDTO = (dto: UserBusinessDTO): UserBusiness => ({
+const fromUserBusinessRelationDTO = (dto: UserBusinessRelationDTO): UserBusinessRelation => ({
   business: fromDTO(dto.business),
   role: dto.role,
+  type: dto.type,
 });
 
 export const createBusinessDataServiceAPI = (): BusinessDataServiceAPI => ({
@@ -31,8 +32,8 @@ export const createBusinessDataServiceAPI = (): BusinessDataServiceAPI => ({
   },
 
   async getUserBusinesses(userEmail) {
-    const dtos: UserBusinessDTO[] = await apiRequest(`/business/${encodeURIComponent(userEmail)}/all`);
-    return dtos.map(fromUserBusinessDTO);
+    const dtos: UserBusinessRelationDTO[] = await apiRequest(`/business/${encodeURIComponent(userEmail)}/all`);
+    return dtos.map(fromUserBusinessRelationDTO);
   },
 
   async connectToBusiness(id) {

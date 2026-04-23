@@ -2,19 +2,19 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../auth-package';
 import type { ScreenWithNavigationProps } from '../../screens-package';
-import type { Business, UserBusiness, UserRole } from '../types/business';
+import type { Business, UserBusinessRelation, UserBusinessRelationType, UserRole } from '../types/business';
 import { colors } from '../../../styles/theme/colors';
 import { typography } from '../../../styles/theme/typography';
 
 interface Props extends ScreenWithNavigationProps {
-  getUserBusinesses: (userEmail: string) => Promise<UserBusiness[]>;
-  onSelectBusiness: (business: Business, role: UserRole) => Promise<void>;
+  getUserBusinesses: (userEmail: string) => Promise<UserBusinessRelation[]>;
+  onSelectBusiness: (business: Business, role: UserRole, type: UserBusinessRelationType) => Promise<void>;
 }
 
 export function BusinessPickerScreen({ navigation, getUserBusinesses, onSelectBusiness }: Props) {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [businesses, setBusinesses] = useState<UserBusiness[]>([]);
+  const [businesses, setBusinesses] = useState<UserBusinessRelation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,7 +24,7 @@ export function BusinessPickerScreen({ navigation, getUserBusinesses, onSelectBu
     getUserBusinesses(user.email)
       .then(async results => {
         if (results.length === 1) {
-          await onSelectBusiness(results[0].business, results[0].role);
+          await onSelectBusiness(results[0].business, results[0].role, results[0].type);
           navigation.navigate('Dashboard');
         } else {
           setBusinesses(results);
@@ -37,9 +37,9 @@ export function BusinessPickerScreen({ navigation, getUserBusinesses, onSelectBu
       });
   }, [user?.email]);
 
-  const handleSelect = async (business: Business, role: UserRole) => {
+  const handleSelect = async (business: Business, role: UserRole, type: UserBusinessRelationType) => {
     try {
-      await onSelectBusiness(business, role);
+      await onSelectBusiness(business, role, type);
       navigation.navigate('Dashboard');
     } catch {
       setError(t('businessPicker.error'));
@@ -68,10 +68,10 @@ export function BusinessPickerScreen({ navigation, getUserBusinesses, onSelectBu
         {t('businessPicker.title')}
       </h1>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-        {businesses.map(({ business, role }) => (
+        {businesses.map(({ business, role, type }) => (
           <li key={business.id}>
             <button
-              onClick={() => handleSelect(business, role)}
+              onClick={() => handleSelect(business, role, type)}
               style={{
                 width: '100%',
                 textAlign: 'start',

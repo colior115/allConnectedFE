@@ -7,6 +7,7 @@ import { BusinessDataServiceAPI } from '../apis/businessDataServiceAPI';
 import { createBusinessContextInfraAPI } from '../apis/createBusinessContextInfraAPI';
 import { createBusinessDataServiceAPI } from '../apis/createBusinessDataServiceAPI';
 import { BusinessProvider } from '../context/BusinessContext';
+import { RoleGuard } from '../components/RoleGuard';
 import { BusinessPickerScreen } from '../screens/BusinessPickerScreen';
 import { DashboardScreen } from '../screens/DashboardScreen';
 import { NoPermissionScreen } from '../screens/NoPermissionScreen';
@@ -77,9 +78,9 @@ export const BusinessPackage: EntryPoint[] = [
             <BusinessPickerScreen
               navigation={navigation}
               getUserBusinesses={businessDataAPI.getUserBusinesses}
-              onSelectBusiness={async (business, role) => {
+              onSelectBusiness={async (business, role, type) => {
                 const token = await businessDataAPI.connectToBusiness(business.id);
-                businessContextAPI.setBusinessContext({ businessId: business.id, role, token });
+                businessContextAPI.setBusinessContext({ businessId: business.id, role, type, token });
               }}
             />
           </BaseScreen>
@@ -89,9 +90,11 @@ export const BusinessPackage: EntryPoint[] = [
       screensAPI.contributeScreen(shell, {
         name: 'Dashboard',
         screen: ({ navigation }) => (
-            <BaseScreen>
+          <BaseScreen>
+            <RoleGuard role="admin" navigation={navigation}>
               <DashboardScreen navigation={navigation} onLogout={authFlowsAPI.logout} />
-            </BaseScreen>
+            </RoleGuard>
+          </BaseScreen>
         ),
       });
 

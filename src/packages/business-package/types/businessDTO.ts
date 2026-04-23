@@ -1,3 +1,5 @@
+import type { UserBusinessRelationType, UserRole } from "./business";
+
 export interface BusinessDTO {
   id: string;
   name: string;
@@ -6,9 +8,8 @@ export interface BusinessDTO {
 
 export type BusinessPublicDetailsDTO = Pick<BusinessDTO, 'id' | 'name'>;
 
-export type UserRole = 'admin' | 'user';
-
-export interface UserBusinessDTO {
+export interface UserBusinessRelationDTO {
   business: BusinessDTO;
   role: UserRole;
+  type: UserBusinessRelationType;
 }
