@@ -32,7 +32,7 @@ export const createBusinessDataServiceAPI = (): BusinessDataServiceAPI => ({
   },
 
   async getUserBusinesses(userEmail) {
-    const dtos: UserBusinessRelationDTO[] = await apiRequest(`/business/${encodeURIComponent(userEmail)}/all`);
+    const dtos: UserBusinessRelationDTO[] = await apiRequest(`/businessUserRelations/enriched/${encodeURIComponent(userEmail)}/all`);
     return dtos.map(fromUserBusinessRelationDTO);
   },
 

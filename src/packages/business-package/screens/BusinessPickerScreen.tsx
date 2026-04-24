@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../auth-package';
 import type { ScreenWithNavigationProps } from '../../screens-package';
-import type { Business, UserBusinessRelation, UserBusinessRelationType, UserRole } from '../types/business';
+import { Loader, Text, Title } from '../../../components';
+import { BusinessListItem } from '../components/BusinessListItem';
 import { colors } from '../../../styles/theme/colors';
-import { typography } from '../../../styles/theme/typography';
+import type { Business, UserBusinessRelation, UserBusinessRelationType, UserRole } from '../types/business';
 
 interface Props extends ScreenWithNavigationProps {
   getUserBusinesses: (userEmail: string) => Promise<UserBusinessRelation[]>;
@@ -46,54 +47,27 @@ export function BusinessPickerScreen({ navigation, getUserBusinesses, onSelectBu
     }
   };
 
-  if (loading) {
-    return (
-      <div style={{ padding: '2rem', fontFamily: typography.fontFamily, color: colors.textSecondary }}>
-        {t('businessPicker.loading')}
-      </div>
-    );
-  }
+  if (loading) return <Loader />;
 
   if (error) {
     return (
-      <div style={{ padding: '2rem', fontFamily: typography.fontFamily, color: colors.error }}>
-        {error}
+      <div style={{ paddingInline: '2rem', paddingBlock: '2rem' }}>
+        <Text color={colors.error}>{error}</Text>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '2rem', fontFamily: typography.fontFamily }}>
-      <h1 style={{ ...typography.h2, margin: '0 0 1.5rem', fontFamily: typography.fontFamily, color: colors.textPrimary }}>
-        {t('businessPicker.title')}
-      </h1>
+    <div style={{ paddingInline: '2rem', paddingBlock: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      <Title size="large">{t('businessPicker.title')}</Title>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {businesses.map(({ business, role, type }) => (
           <li key={business.id}>
-            <button
+            <BusinessListItem
+              name={business.name}
+              role={role}
               onClick={() => handleSelect(business, role, type)}
-              style={{
-                width: '100%',
-                textAlign: 'start',
-                paddingBlock: '1rem',
-                paddingInline: '1.25rem',
-                border: `1px solid ${colors.border}`,
-                borderRadius: '8px',
-                background: '#fff',
-                cursor: 'pointer',
-                fontFamily: typography.fontFamily,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.25rem',
-              }}
-            >
-              <span style={{ ...typography.body, fontWeight: 600, color: colors.textPrimary }}>
-                {business.name}
-              </span>
-              <span style={{ ...typography.small, color: colors.textSecondary }}>
-                {role}
-              </span>
-            </button>
+            />
           </li>
         ))}
       </ul>

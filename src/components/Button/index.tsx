@@ -2,11 +2,11 @@ import { type ButtonHTMLAttributes, type CSSProperties } from 'react';
 import { colors } from '../../styles/theme/colors';
 import { typography } from '../../styles/theme/typography';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'style'> {
   variant?: 'primary' | 'ghost';
 }
 
-export default function Button({ variant = 'primary', style, children, ...props }: ButtonProps) {
+export default function Button({ variant = 'primary', children, ...props }: ButtonProps) {
   const base: CSSProperties = {
     fontFamily: typography.fontFamily,
     fontSize: typography.body.fontSize,
@@ -35,7 +35,7 @@ export default function Button({ variant = 'primary', style, children, ...props 
   };
 
   return (
-    <button style={{ ...base, ...variants[variant], ...style }} {...props}>
+    <button style={{ ...base, ...variants[variant] }} {...props}>
       {children}
     </button>
   );

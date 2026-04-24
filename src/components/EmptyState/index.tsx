@@ -5,14 +5,12 @@ import Text from '../Text';
 interface EmptyStateProps {
   title: string;
   description?: string;
-  style?: CSSProperties;
-  className?: string;
 }
 
-export default function EmptyState({ title, description, style, className }: EmptyStateProps) {
+export default function EmptyState({ title, description }: EmptyStateProps) {
   const containerStyle: CSSProperties = {
     textAlign: 'center',
-    marginTop: '20vh',
+    marginBlockStart: '20vh',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -20,7 +18,7 @@ export default function EmptyState({ title, description, style, className }: Emp
   };
 
   return (
-    <div style={{ ...containerStyle, ...style }} className={className}>
+    <div style={containerStyle}>
       <Title size="large">{title}</Title>
       {description && <Text size="large">{description}</Text>}
     </div>

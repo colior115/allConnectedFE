@@ -8,20 +8,18 @@ interface TextProps {
   size?: TextSize;
   children: ReactNode;
   color?: string;
-  className?: string;
-  style?: CSSProperties;
 }
 
 const sizeMap: Record<TextSize, keyof typeof typography> = {
-    large: 'large',
-    normal: 'body',
-    small: 'small',
+  large: 'large',
+  normal: 'body',
+  small: 'small',
 };
 
-export default function Text({ size = 'normal', children, color, className, style }: TextProps) {
+export default function Text({ size = 'normal', children, color }: TextProps) {
   const token = typography[sizeMap[size]] as { fontSize: string; fontWeight: number };
 
-  const baseStyle: CSSProperties = {
+  const style: CSSProperties = {
     margin: 0,
     fontFamily: typography.fontFamily,
     fontSize: token.fontSize,
@@ -29,9 +27,5 @@ export default function Text({ size = 'normal', children, color, className, styl
     color: color ?? colors.textSecondary,
   };
 
-  return (
-    <p className={className} style={{ ...baseStyle, ...style }}>
-      {children}
-    </p>
-  );
+  return <p style={style}>{children}</p>;
 }

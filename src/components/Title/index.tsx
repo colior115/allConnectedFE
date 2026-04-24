@@ -8,8 +8,6 @@ interface TitleProps {
   size: TitleSize;
   children: ReactNode;
   color?: string;
-  className?: string;
-  style?: CSSProperties;
 }
 
 const sizeMap: Record<TitleSize, { tag: 'h1' | 'h2' | 'h3'; typographyKey: keyof typeof typography }> = {
@@ -18,11 +16,11 @@ const sizeMap: Record<TitleSize, { tag: 'h1' | 'h2' | 'h3'; typographyKey: keyof
   small: { tag: 'h3', typographyKey: 'h3' },
 };
 
-export default function Title({ size, children, color, className, style }: TitleProps) {
+export default function Title({ size, children, color }: TitleProps) {
   const { tag: Tag, typographyKey } = sizeMap[size];
   const token = typography[typographyKey] as { fontSize: string; fontWeight: number };
 
-  const baseStyle: CSSProperties = {
+  const style: CSSProperties = {
     margin: 0,
     fontFamily: typography.fontFamily,
     fontSize: token.fontSize,
@@ -30,9 +28,5 @@ export default function Title({ size, children, color, className, style }: Title
     color: color ?? colors.textPrimary,
   };
 
-  return (
-    <Tag className={className} style={{ ...baseStyle, ...style }}>
-      {children}
-    </Tag>
-  );
+  return <Tag style={style}>{children}</Tag>;
 }

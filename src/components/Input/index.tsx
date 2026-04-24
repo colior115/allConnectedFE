@@ -1,15 +1,16 @@
 import { useState, type CSSProperties, type InputHTMLAttributes } from 'react';
 import { colors } from '../../styles/theme/colors';
 import { typography } from '../../styles/theme/typography';
+import Text from '../Text';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'style'> {
   error?: string;
 }
 
-export default function Input({ error, style, ...props }: InputProps) {
+export default function Input({ error, ...props }: InputProps) {
   const [focused, setFocused] = useState(false);
 
-  const baseStyle: CSSProperties = {
+  const inputStyle: CSSProperties = {
     fontFamily: typography.fontFamily,
     fontSize: typography.body.fontSize,
     fontWeight: typography.body.fontWeight,
@@ -22,27 +23,17 @@ export default function Input({ error, style, ...props }: InputProps) {
     boxSizing: 'border-box',
     boxShadow: focused ? `0 0 0 2px ${colors.primary}33` : 'none',
     transition: 'border-color 0.2s, box-shadow 0.2s',
-    ...style,
   };
 
   return (
     <div>
       <input
-        style={baseStyle}
+        style={inputStyle}
         onFocus={(e) => { setFocused(true); props.onFocus?.(e); }}
         onBlur={(e) => { setFocused(false); props.onBlur?.(e); }}
         {...props}
       />
-      {error && (
-        <p style={{
-          margin: '4px 0 0',
-          fontSize: typography.small.fontSize,
-          color: colors.error,
-          fontFamily: typography.fontFamily,
-        }}>
-          {error}
-        </p>
-      )}
+      {error && <Text size="small" color={colors.error}>{error}</Text>}
     </div>
   );
 }

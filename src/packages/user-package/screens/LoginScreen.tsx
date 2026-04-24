@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, Title } from '../../../components';
-import Button from '../../../components/Button';
-import Input from '../../../components/Input';
-import Label from '../../../components/Label';
+import { Button, Input, Label, Loader, Text, Title } from '../../../components';
 import { colors } from '../../../styles/theme/colors';
 import type { ScreenWithNavigationProps } from '../../screens-package';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../auth-package';
 
 interface Props extends ScreenWithNavigationProps {
   onLogin: (email: string, password: string) => Promise<void>;
@@ -40,7 +37,7 @@ export function LoginScreen({ navigation, onLogin }: Props) {
     }
   }
 
-  if (loading) return null;
+  if (loading) return <Loader />;
 
   return (
     <div style={{
@@ -68,15 +65,9 @@ export function LoginScreen({ navigation, onLogin }: Props) {
           background: '#fff',
         }}
       >
-        <Title size='large'>
-          {t('auth.loginTitle')}
-        </Title>
+        <Title size="large">{t('auth.loginTitle')}</Title>
 
-        {error && (
-          <Text size='small' color={colors.error}>
-            {error}
-          </Text>
-        )}
+        {error && <Text size="small" color={colors.error}>{error}</Text>}
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
           <Label htmlFor="email">{t('auth.email')}</Label>
@@ -106,7 +97,7 @@ export function LoginScreen({ navigation, onLogin }: Props) {
           {submitting ? t('auth.loggingIn') : t('auth.loginButton')}
         </Button>
 
-        <Text size='small' color={colors.textSecondary}>
+        <Text size="small" color={colors.textSecondary}>
           {t('auth.noAccount')}{' '}
           <Button type="button" variant="ghost" onClick={() => navigation.navigate('Register')}>
             {t('auth.registerLink')}

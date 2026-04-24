@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, Title } from '../../../components';
-import Button from '../../../components/Button';
-import Input from '../../../components/Input';
-import Label from '../../../components/Label';
+import { Button, Input, Label, Text, Title } from '../../../components';
 import { colors } from '../../../styles/theme/colors';
-import { typography } from '../../../styles/theme/typography';
 import type { ScreenWithNavigationProps } from '../../screens-package';
 
 interface Props extends ScreenWithNavigationProps {
@@ -61,21 +57,10 @@ export function RegisterScreen({ navigation, onRegister }: Props) {
           background: '#fff',
         }}
       >
-        <Title size='large'>
-          {t('auth.registerTitle')}
-        </Title>
+        <Title size="large">{t('auth.registerTitle')}</Title>
 
-        {success && (
-          <Text size='small' color={colors.success}>
-            {t('auth.registrationSuccess')}
-          </Text>
-        )}
-
-        {error && (
-          <Text size='small' color={colors.error}>
-            {error}
-          </Text>
-        )}
+        {success && <Text size="small" color={colors.success}>{t('auth.registrationSuccess')}</Text>}
+        {error && <Text size="small" color={colors.error}>{error}</Text>}
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
           <Label htmlFor="email">{t('auth.email')}</Label>
@@ -106,12 +91,12 @@ export function RegisterScreen({ navigation, onRegister }: Props) {
           {submitting ? t('auth.registering') : t('auth.registerButton')}
         </Button>
 
-        <p style={{ margin: 0, fontSize: typography.small.fontSize, textAlign: 'center', fontFamily: typography.fontFamily, color: colors.textSecondary }}>
+        <Text size="small" color={colors.textSecondary}>
           {t('auth.alreadyHaveAccount')}{' '}
           <Button type="button" variant="ghost" onClick={() => navigation.navigate('Login')}>
             {t('auth.loginLink')}
           </Button>
-        </p>
+        </Text>
       </form>
     </div>
   );

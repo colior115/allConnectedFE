@@ -7,7 +7,6 @@ import { BusinessDataServiceAPI } from '../apis/businessDataServiceAPI';
 import { createBusinessContextInfraAPI } from '../apis/createBusinessContextInfraAPI';
 import { createBusinessDataServiceAPI } from '../apis/createBusinessDataServiceAPI';
 import { BusinessProvider } from '../context/BusinessContext';
-import { RoleGuard } from '../components/RoleGuard';
 import { BusinessPickerScreen } from '../screens/BusinessPickerScreen';
 import { DashboardScreen } from '../screens/DashboardScreen';
 import { NoPermissionScreen } from '../screens/NoPermissionScreen';
@@ -91,9 +90,7 @@ export const BusinessPackage: EntryPoint[] = [
         name: 'Dashboard',
         screen: ({ navigation }) => (
           <BaseScreen>
-            <RoleGuard role="admin" navigation={navigation}>
               <DashboardScreen navigation={navigation} onLogout={authFlowsAPI.logout} />
-            </RoleGuard>
           </BaseScreen>
         ),
       });

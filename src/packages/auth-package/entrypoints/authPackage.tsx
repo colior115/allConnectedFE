@@ -11,8 +11,6 @@ import { createAuthFlowsAPI } from '../apis/createAuthFlowsAPI';
 import { SiteContextInfraAPI } from '../apis/siteContextInfraAPI';
 import { createSiteContextInfraAPI } from '../apis/createSiteContextInfraAPI';
 import { AuthProvider, useAuth } from '../context/AuthContext';
-import { LoginScreen } from '../screens/LoginScreen';
-import { RegisterScreen } from '../screens/RegisterScreen';
 
 export const AuthPackage: EntryPoint[] = [
   {
@@ -99,45 +97,6 @@ export const AuthPackage: EntryPoint[] = [
 
     attach(shell) {
       shell.contributeAPI(AuthFlowsAPI, () => createAuthFlowsAPI(shell));
-    }
-  },
-
-  {
-    name: 'AUTH_UI',
-    layer: 'UI',
-
-    getDependencyAPIs() {
-      return [AuthFlowsAPI, ScreensInfraAPI];
-    },
-
-    extend(shell) {
-      const screensAPI = shell.getAPI(ScreensInfraAPI);
-      const authFlowsAPI = shell.getAPI(AuthFlowsAPI);
-      const { BaseScreen } = screensAPI.components;
-
-      screensAPI.contributeScreen(
-        shell,
-        {
-          name: 'Login',
-          protected: false,
-          screen: ({ navigation }) => (
-            <BaseScreen>
-              <LoginScreen navigation={navigation} onLogin={authFlowsAPI.login} />
-            </BaseScreen>
-          ),
-        },
-        true,
-      );
-
-      screensAPI.contributeScreen(shell, {
-        name: 'Register',
-        protected: false,
-        screen: ({ navigation }) => (
-          <BaseScreen>
-            <RegisterScreen navigation={navigation} onRegister={authFlowsAPI.register} />
-          </BaseScreen>
-        ),
-      });
     },
   },
 ];

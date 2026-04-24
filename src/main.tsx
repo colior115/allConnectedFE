@@ -6,12 +6,14 @@ import { ScreensPackage } from './packages/screens-package'
 import { AuthPackage } from './packages/auth-package'
 import { I18nPackage } from './packages/i18n-package'
 import { BusinessPackage } from './packages/business-package'
+import { UserPackage } from './packages/user-package'
 
 const host = createAppHost([
   ...mainViewPackage,
   ...I18nPackage,
   ...ScreensPackage,
   ...AuthPackage,
+  ...UserPackage,
   ...BusinessPackage,
 ],
 {
