@@ -7,6 +7,7 @@ import { AuthPackage } from './packages/auth-package'
 import { I18nPackage } from './packages/i18n-package'
 import { BusinessPackage } from './packages/business-package'
 import { UserPackage } from './packages/user-package'
+import { EmployeePackage } from './packages/employee-package'
 
 const host = createAppHost([
   ...mainViewPackage,
@@ -15,6 +16,7 @@ const host = createAppHost([
   ...AuthPackage,
   ...UserPackage,
   ...BusinessPackage,
+  ...EmployeePackage,
 ],
 {
     monitoring: {},

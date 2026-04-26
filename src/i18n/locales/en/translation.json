@@ -16,13 +16,33 @@
     "unknownError": "An unknown error occurred",
     "logout": "Logout"
   },
+  "user": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "add": "Add",
+    "adding": "Adding…",
+    "cancel": "Cancel",
+    "emailAlreadyExists": "A user with this email already exists"
+  },
   "dashboard": {
-    "title": "Dashboard"
+    "title": "Dashboard",
+    "addEmployee": "Add Employee"
   },
   "businessPicker": {
     "title": "Choose a Business",
     "loading": "Loading businesses…",
     "error": "Failed to load businesses"
+  },
+  "employee": {
+    "salaryType": "Salary Type",
+    "salaryValue": "Salary",
+    "currency": "Currency",
+    "hourly": "Hourly",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "addDetails": "Add Employee Details",
+    "adding": "Adding…",
+    "add": "Add"
   },
   "noPermission": {
     "title": "Access Denied",

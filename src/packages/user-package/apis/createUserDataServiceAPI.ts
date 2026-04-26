@@ -13,33 +13,30 @@ const fromDTO = (dto: UserDTO): User => ({
 
 export const createUserDataServiceAPI = (): UserDataServiceAPI => ({
   async getUserByEmail(email) {
-    const dto: UserDTO = await apiRequest(`/users/email/${encodeURIComponent(email)}`);
-    return fromDTO(dto);
-  },
-
-  async getUserById(id) {
-    const dto: UserDTO = await apiRequest(`/users/${id}`);
+    const dto: UserDTO = await apiRequest(`/users/${encodeURIComponent(email)}`, 
+    { method: 'GET' }
+  );
     return fromDTO(dto);
   },
 
   async createUser(data: UpdateUserInputDTO) {
-    const dto: UserDTO = await apiRequest('/users/', {
+    const dto: UserDTO = await apiRequest('/users', {
       method: 'POST',
       body: JSON.stringify(data),
     });
     return fromDTO(dto);
   },
 
-  async updateUser(id, data) {
-    const dto: UserDTO = await apiRequest(`/users/${id}`, {
+  async updateUser(email, data) {
+    const dto: UserDTO = await apiRequest(`/users/${encodeURIComponent(email)}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
     return fromDTO(dto);
   },
 
-  async deleteUser(id) {
-    const dto: UserDTO = await apiRequest(`/users/${id}`, {
+  async deleteUser(email) {
+    const dto: UserDTO = await apiRequest(`/users/${encodeURIComponent(email)}`, {
       method: 'DELETE',
     });
     return fromDTO(dto);

@@ -1,5 +1,6 @@
 import type { EntryPoint } from 'repluggable';
 import { AuthFlowsAPI } from '../../auth-package';
+import { EmployeeUIAPI } from '../../employee-package';
 import { MainViewInfraAPI } from '../../main-view-package';
 import { ScreensInfraAPI } from '../../screens-package';
 import { BusinessContextInfraAPI } from '../apis/businessContextInfraAPI';
@@ -7,6 +8,7 @@ import { BusinessDataServiceAPI } from '../apis/businessDataServiceAPI';
 import { createBusinessContextInfraAPI } from '../apis/createBusinessContextInfraAPI';
 import { createBusinessDataServiceAPI } from '../apis/createBusinessDataServiceAPI';
 import { BusinessProvider } from '../context/BusinessContext';
+import { AddEmployeeScreen } from '../screens/AddEmployeeScreen';
 import { BusinessPickerScreen } from '../screens/BusinessPickerScreen';
 import { DashboardScreen } from '../screens/DashboardScreen';
 import { NoPermissionScreen } from '../screens/NoPermissionScreen';
@@ -60,7 +62,7 @@ export const BusinessPackage: EntryPoint[] = [
     layer: 'UI',
 
     getDependencyAPIs() {
-      return [AuthFlowsAPI, ScreensInfraAPI, BusinessDataServiceAPI, BusinessContextInfraAPI];
+      return [AuthFlowsAPI, ScreensInfraAPI, BusinessDataServiceAPI, BusinessContextInfraAPI, EmployeeUIAPI];
     },
 
     extend(shell) {
@@ -68,6 +70,7 @@ export const BusinessPackage: EntryPoint[] = [
       const authFlowsAPI = shell.getAPI(AuthFlowsAPI);
       const businessDataAPI = shell.getAPI(BusinessDataServiceAPI);
       const businessContextAPI = shell.getAPI(BusinessContextInfraAPI);
+      const employeeUIAPI = shell.getAPI(EmployeeUIAPI);
       const { BaseScreen } = screensAPI.components;
 
       screensAPI.contributeScreen(shell, {
@@ -90,7 +93,19 @@ export const BusinessPackage: EntryPoint[] = [
         name: 'Dashboard',
         screen: ({ navigation }) => (
           <BaseScreen>
-              <DashboardScreen navigation={navigation} onLogout={authFlowsAPI.logout} />
+            <DashboardScreen navigation={navigation} onLogout={authFlowsAPI.logout} />
+          </BaseScreen>
+        ),
+      });
+
+      screensAPI.contributeScreen(shell, {
+        name: 'AddEmployee',
+        screen: ({ navigation }) => (
+          <BaseScreen>
+            <AddEmployeeScreen
+              navigation={navigation}
+              AddEmployeeForm={employeeUIAPI.components.AddEmployeeForm}
+            />
           </BaseScreen>
         ),
       });

@@ -32,12 +32,12 @@ export const createBusinessDataServiceAPI = (): BusinessDataServiceAPI => ({
   },
 
   async getUserBusinesses(userEmail) {
-    const dtos: UserBusinessRelationDTO[] = await apiRequest(`/businessUserRelations/enriched/${encodeURIComponent(userEmail)}/all`);
+    const dtos: UserBusinessRelationDTO[] = await apiRequest(`/businessManager/relations/${encodeURIComponent(userEmail)}/all`);
     return dtos.map(fromUserBusinessRelationDTO);
   },
 
   async connectToBusiness(id) {
-    const { token } = await apiRequest(`/business/${id}/connect`);
+    const { token } = await apiRequest(`/businessManager/connect/${id}`);
     return token as string;
   },
 
@@ -46,10 +46,10 @@ export const createBusinessDataServiceAPI = (): BusinessDataServiceAPI => ({
     return fromDTO(dto);
   },
 
-  async create(name) {
-    const dto: BusinessDTO = await apiRequest('/business', {
+  async create(name, businessId) {
+    const dto: BusinessDTO = await apiRequest('/businessManager', {
       method: 'POST',
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name, businessId }),
     });
     return fromDTO(dto);
   },

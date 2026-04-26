@@ -16,13 +16,33 @@
     "unknownError": "אירעה שגיאה לא ידועה",
     "logout": "התנתק"
   },
+  "user": {
+    "firstName": "שם פרטי",
+    "lastName": "שם משפחה",
+    "add": "הוסף",
+    "adding": "מוסיף…",
+    "cancel": "ביטול",
+    "emailAlreadyExists": "משתמש עם אימייל זה כבר קיים"
+  },
   "dashboard": {
-    "title": "לוח בקרה"
+    "title": "לוח בקרה",
+    "addEmployee": "הוסף עובד"
   },
   "businessPicker": {
     "title": "בחר עסק",
     "loading": "טוען עסקים…",
     "error": "טעינת עסקים נכשלה"
+  },
+  "employee": {
+    "salaryType": "סוג שכר",
+    "salaryValue": "שכר",
+    "currency": "מטבע",
+    "hourly": "שעתי",
+    "monthly": "חודשי",
+    "annual": "שנתי",
+    "addDetails": "הוסף פרטי עובד",
+    "adding": "מוסיף…",
+    "add": "הוסף"
   },
   "noPermission": {
     "title": "גישה נדחתה",
