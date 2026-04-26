@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Title, Text } from '../../../components';
+import { Text } from '../../../components';
 import type { ScreenWithNavigationProps } from '../../screens-package';
 
 export function NoPermissionScreen(_: ScreenWithNavigationProps) {
@@ -14,7 +14,6 @@ export function NoPermissionScreen(_: ScreenWithNavigationProps) {
       height: '100%',
       gap: '0.5rem',
     }}>
-      <Title size="large">{t('noPermission.title')}</Title>
       <Text size="normal">{t('noPermission.message')}</Text>
     </div>
   );

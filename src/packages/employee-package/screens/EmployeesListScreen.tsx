@@ -1,6 +1,6 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loader, Text, Title } from '../../../components';
+import { Loader, Text } from '../../../components';
 import { colors } from '../../../styles/theme/colors';
 import { typography } from '../../../styles/theme/typography';
 import { useBusinessContext } from '../../business-package';
@@ -48,8 +48,6 @@ export function EmployeesListScreen({ navigation, getEmployees }: Props) {
 
   return (
     <div style={{ paddingInline: '2rem', paddingBlock: '2rem' }}>
-      <Title size="large">{t('employee.listTitle')}</Title>
-
       {loading && (
         <div style={{ display: 'flex', justifyContent: 'center', paddingBlock: '3rem' }}>
           <Loader />
@@ -63,7 +61,7 @@ export function EmployeesListScreen({ navigation, getEmployees }: Props) {
       )}
 
       {!loading && !error && relations.length > 0 && (
-        <div style={{ overflowX: 'auto', marginBlockStart: '1.5rem' }}>
+        <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../auth-package';
 import type { ScreenWithNavigationProps } from '../../screens-package';
-import { Loader, Text, Title } from '../../../components';
+import { Loader, Text } from '../../../components';
 import { BusinessListItem } from '../components/BusinessListItem';
 import { colors } from '../../../styles/theme/colors';
 import type { Business, UserBusinessRelation, UserBusinessRelationType, UserRole } from '../types/business';
@@ -59,7 +59,6 @@ export function BusinessPickerScreen({ navigation, getUserBusinesses, onSelectBu
 
   return (
     <div style={{ paddingInline: '2rem', paddingBlock: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <Title size="large">{t('businessPicker.title')}</Title>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {businesses.map(({ business, role, type }) => (
           <li key={business.id}>

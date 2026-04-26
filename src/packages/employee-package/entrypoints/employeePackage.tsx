@@ -46,7 +46,7 @@ export const EmployeePackage: EntryPoint[] = [
       screensAPI.contributeScreen(shell, {
         name: 'EmployeesList',
         screen: ({ navigation }) => (
-          <BaseScreen>
+          <BaseScreen navigation={navigation} titleKey="employee.listTitle">
             <EmployeesListScreen
               navigation={navigation}
               getEmployees={employeeDataAPI.getEmployees}
@@ -58,7 +58,7 @@ export const EmployeePackage: EntryPoint[] = [
       screensAPI.contributeScreen(shell, {
         name: 'EmployeeViewer',
         screen: ({ navigation }) => (
-          <BaseScreen>
+          <BaseScreen navigation={navigation} titleKey="employee.viewerTitle">
             <EmployeeViewerScreen
               navigation={navigation}
               getEmployeeById={employeeDataAPI.getEmployeeById}

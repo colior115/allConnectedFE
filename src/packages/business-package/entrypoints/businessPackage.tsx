@@ -76,7 +76,7 @@ export const BusinessPackage: EntryPoint[] = [
       screensAPI.contributeScreen(shell, {
         name: 'BusinessPicker',
         screen: ({ navigation }) => (
-          <BaseScreen>
+          <BaseScreen titleKey="businessPicker.title">
             <BusinessPickerScreen
               navigation={navigation}
               getUserBusinesses={businessDataAPI.getUserBusinesses}
@@ -92,7 +92,7 @@ export const BusinessPackage: EntryPoint[] = [
       screensAPI.contributeScreen(shell, {
         name: 'Dashboard',
         screen: ({ navigation }) => (
-          <BaseScreen>
+          <BaseScreen navigation={navigation} titleKey="dashboard.title">
             <DashboardScreen navigation={navigation} onLogout={authFlowsAPI.logout} />
           </BaseScreen>
         ),
@@ -101,7 +101,7 @@ export const BusinessPackage: EntryPoint[] = [
       screensAPI.contributeScreen(shell, {
         name: 'AddEmployee',
         screen: ({ navigation }) => (
-          <BaseScreen>
+          <BaseScreen navigation={navigation} titleKey="dashboard.addEmployee">
             <AddEmployeeScreen
               navigation={navigation}
               AddEmployeeForm={employeeUIAPI.components.AddEmployeeForm}
@@ -114,7 +114,7 @@ export const BusinessPackage: EntryPoint[] = [
         name: 'NoPermission',
         protected: false,
         screen: ({ navigation }) => (
-          <BaseScreen>
+          <BaseScreen navigation={navigation} titleKey="noPermission.title">
             <NoPermissionScreen navigation={navigation} />
           </BaseScreen>
         ),

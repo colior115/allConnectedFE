@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loader, Text, Title } from '../../../components';
+import { Loader, Text } from '../../../components';
 import { colors } from '../../../styles/theme/colors';
 import type { ScreenWithNavigationProps } from '../../screens-package';
 import type { EmployeeDataServiceAPI } from '../apis/employeeDataServiceAPI';
@@ -40,8 +40,6 @@ export function EmployeeViewerScreen({ navigation, getEmployeeById }: Props) {
 
   return (
     <div style={{ paddingInline: '2rem', paddingBlock: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <Title size="large">{t('employee.viewerTitle')}</Title>
-
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         <Field label={t('auth.email')} value={relation.user.email} />
         <Field label={t('user.firstName')} value={relation.user.firstName} />
