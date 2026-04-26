@@ -4,3 +4,4 @@ export { EmployeeUIAPI } from './apis/employeeUIAPI';
 export type { AddEmployeeFormProps, AddEmployeeFormComponent } from './apis/employeeUIAPI';
 export type { Employee, SalaryType } from './types/employee';
 export type { EmployeeDTO, CreateEmployeeInputDTO, UpdateEmployeeInputDTO } from './types/employeeDTO';
+export type { EmployeeRelation, EmployeeRelationUser } from './types/employeeRelation';

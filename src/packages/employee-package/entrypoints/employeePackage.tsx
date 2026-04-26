@@ -1,9 +1,12 @@
 import type { EntryPoint } from 'repluggable';
 import { UserDataServiceAPI } from '../../user-package';
+import { ScreensInfraAPI } from '../../screens-package';
 import { EmployeeDataServiceAPI } from '../apis/employeeDataServiceAPI';
 import { createEmployeeDataServiceAPI } from '../apis/createEmployeeDataServiceAPI';
 import { EmployeeUIAPI } from '../apis/employeeUIAPI';
 import { createEmployeeUIAPI } from '../apis/createEmployeeUIAPI';
+import { EmployeesListScreen } from '../screens/EmployeesListScreen';
+import { EmployeeViewerScreen } from '../screens/EmployeeViewerScreen';
 
 export const EmployeePackage: EntryPoint[] = [
   {
@@ -28,11 +31,41 @@ export const EmployeePackage: EntryPoint[] = [
     },
 
     getDependencyAPIs() {
-      return [EmployeeDataServiceAPI, UserDataServiceAPI];
+      return [EmployeeDataServiceAPI, UserDataServiceAPI, ScreensInfraAPI];
     },
 
     attach(shell) {
       shell.contributeAPI(EmployeeUIAPI, () => createEmployeeUIAPI(shell));
+    },
+
+    extend(shell) {
+      const screensAPI = shell.getAPI(ScreensInfraAPI);
+      const employeeDataAPI = shell.getAPI(EmployeeDataServiceAPI);
+      const { BaseScreen } = screensAPI.components;
+
+      screensAPI.contributeScreen(shell, {
+        name: 'EmployeesList',
+        screen: ({ navigation }) => (
+          <BaseScreen>
+            <EmployeesListScreen
+              navigation={navigation}
+              getEmployees={employeeDataAPI.getEmployees}
+            />
+          </BaseScreen>
+        ),
+      });
+
+      screensAPI.contributeScreen(shell, {
+        name: 'EmployeeViewer',
+        screen: ({ navigation }) => (
+          <BaseScreen>
+            <EmployeeViewerScreen
+              navigation={navigation}
+              getEmployeeById={employeeDataAPI.getEmployeeById}
+            />
+          </BaseScreen>
+        ),
+      });
     },
   },
 ];

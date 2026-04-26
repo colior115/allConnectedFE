@@ -42,7 +42,19 @@
     "annual": "שנתי",
     "addDetails": "הוסף פרטי עובד",
     "adding": "מוסיף…",
-    "add": "הוסף"
+    "add": "הוסף",
+    "listTitle": "עובדים",
+    "viewEmployees": "צפה בעובדים",
+    "viewerTitle": "פרטי עובד",
+    "loadingList": "טוען עובדים…",
+    "loadingDetails": "טוען פרטים…",
+    "errorList": "טעינת עובדים נכשלה",
+    "errorDetails": "טעינת פרטי עובד נכשלה",
+    "noEmployees": "לא נמצאו עובדים",
+    "colEmail": "אימייל",
+    "colFirstName": "שם פרטי",
+    "colLastName": "שם משפחה",
+    "colRole": "תפקיד"
   },
   "noPermission": {
     "title": "גישה נדחתה",

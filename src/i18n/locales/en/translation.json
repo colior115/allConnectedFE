@@ -42,7 +42,19 @@
     "annual": "Annual",
     "addDetails": "Add Employee Details",
     "adding": "Adding…",
-    "add": "Add"
+    "add": "Add",
+    "listTitle": "Employees",
+    "viewEmployees": "View Employees",
+    "viewerTitle": "Employee Details",
+    "loadingList": "Loading employees…",
+    "loadingDetails": "Loading details…",
+    "errorList": "Failed to load employees",
+    "errorDetails": "Failed to load employee details",
+    "noEmployees": "No employees found",
+    "colEmail": "Email",
+    "colFirstName": "First Name",
+    "colLastName": "Last Name",
+    "colRole": "Role"
   },
   "noPermission": {
     "title": "Access Denied",

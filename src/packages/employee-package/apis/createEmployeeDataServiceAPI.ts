@@ -2,6 +2,7 @@ import { apiRequest } from '../../../services/apiClient';
 import type { EmployeeDataServiceAPI } from './employeeDataServiceAPI';
 import type { Employee } from '../types/employee';
 import type { EmployeeDTO, CreateEmployeeInputDTO, UpdateEmployeeInputDTO } from '../types/employeeDTO';
+import type { EmployeeRelation } from '../types/employeeRelation';
 
 const fromDTO = (dto: EmployeeDTO): Employee => ({
   id: dto.id,
@@ -14,6 +15,21 @@ const base = (businessId: string) =>
   `/businessManager/employee/${encodeURIComponent(businessId)}`;
 
 export const createEmployeeDataServiceAPI = (): EmployeeDataServiceAPI => ({
+  async getEmployees(businessId) {
+    const relations: EmployeeRelation[] = await apiRequest(
+      `/businessManager/employees/${encodeURIComponent(businessId)}`,
+      { method: 'GET' },
+    );
+    return relations;
+  },
+
+  async getEmployeeById(employeeId) {
+    const dto: EmployeeDTO = await apiRequest(
+      `/employees/${encodeURIComponent(employeeId)}`,
+      { method: 'GET' },
+    );
+    return fromDTO(dto);
+  },
   async getEmployee(businessId, userEmail) {
     const dto: EmployeeDTO = await apiRequest(
       `${base(businessId)}/${encodeURIComponent(userEmail)}`,
