@@ -2,7 +2,6 @@ import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton, Title } from '../../../../components';
 import { colors } from '../../../../styles/theme/colors';
-import { typography } from '../../../../styles/theme/typography';
 import type { Navigation } from '../../types/navigation';
 import type { SidebarHeaderComponent, SidebarItem } from '../../apis/screensInfraAPI';
 import { Sidebar } from '../sidebar/sidebar';
