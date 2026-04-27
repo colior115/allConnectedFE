@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, Input, Label, Text } from '../../../components';
 import { colors } from '../../../styles/theme/colors';
 import type { User } from '../types/user';
-import type { UpdateUserInputDTO } from '../types/userDTO';
+import type { UserDTO } from '../types/userDTO';
 
 export interface AddUserFormProps {
   canAddNewUser: (email: string) => Promise<boolean>;
@@ -12,7 +12,7 @@ export interface AddUserFormProps {
 }
 
 interface AddUserFormInternalProps extends AddUserFormProps {
-  createUser: (data: UpdateUserInputDTO) => Promise<User>;
+  createUser: (data: UserDTO) => Promise<User>;
 }
 
 export function AddUserForm({ canAddNewUser, createUser, onSuccess, onCancel }: AddUserFormInternalProps) {

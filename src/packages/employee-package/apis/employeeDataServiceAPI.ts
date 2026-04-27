@@ -1,6 +1,5 @@
 import type { SlotKey } from 'repluggable';
-import type { Employee } from '../types/employee';
-import type { CreateEmployeeInputDTO, UpdateEmployeeInputDTO } from '../types/employeeDTO';
+import type { CreateEmployeeInput, Employee, UpdateEmployeeInput } from '../types/employee';
 import type { EmployeeRelation } from '../types/employeeRelation';
 
 export const EmployeeDataServiceAPI: SlotKey<EmployeeDataServiceAPI> = {
@@ -13,7 +12,7 @@ export interface EmployeeDataServiceAPI {
   getEmployees(businessId: string): Promise<EmployeeRelation[]>;
   getEmployeeById(employeeId: string): Promise<Employee>;
   getEmployee(businessId: string, userEmail: string): Promise<Employee>;
-  createEmployee(businessId: string, userEmail: string, data: CreateEmployeeInputDTO): Promise<Employee>;
-  updateEmployee(businessId: string, userEmail: string, data: UpdateEmployeeInputDTO): Promise<Employee>;
+  createEmployee(businessId: string, userEmail: string, data: CreateEmployeeInput): Promise<Employee>;
+  updateEmployee(businessId: string, userEmail: string, data: UpdateEmployeeInput): Promise<Employee>;
   deleteEmployee(businessId: string, userEmail: string): Promise<Employee>;
 }

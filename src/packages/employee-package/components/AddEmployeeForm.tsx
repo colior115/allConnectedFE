@@ -3,9 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, Input, Label, Select, Text } from '../../../components';
 import { colors } from '../../../styles/theme/colors';
 import type { User } from '../../user-package';
-import type { UpdateUserInputDTO } from '../../user-package';
-import type { Employee, SalaryType } from '../types/employee';
-import type { CreateEmployeeInputDTO } from '../types/employeeDTO';
+import type { CreateEmployeeInput, Employee, SalaryType } from '../types/employee';
 
 export interface AddEmployeeFormProps {
   businessId: string;
@@ -15,8 +13,8 @@ export interface AddEmployeeFormProps {
 
 interface AddEmployeeFormInternalProps extends AddEmployeeFormProps {
   canAddNewUser: (email: string) => Promise<boolean>;
-  createUser: (data: UpdateUserInputDTO) => Promise<User>;
-  createEmployee: (businessId: string, userEmail: string, data: CreateEmployeeInputDTO) => Promise<Employee>;
+  createUser: (data: User) => Promise<User>;
+  createEmployee: (businessId: string, userEmail: string, data: CreateEmployeeInput) => Promise<Employee>;
 }
 
 export function AddEmployeeForm({

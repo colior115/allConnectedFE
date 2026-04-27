@@ -1,14 +1,26 @@
 import { apiRequest } from '../../../services/apiClient';
 import type { UserDataServiceAPI } from './userDataServiceAPI';
-import type { User } from '../types/user';
+import type { UpdateUserInput, User } from '../types/user';
 import type { UserDTO, UpdateUserInputDTO } from '../types/userDTO';
 
-const fromDTO = (dto: UserDTO): User => ({
-  id: dto.id,
+const fromUserDTO = (dto: UserDTO): User => ({
   firstName: dto.firstName,
   lastName: dto.lastName,
   email: dto.email,
   role: dto.role,
+});
+
+const toUserDTO = (user: User): UserDTO => ({
+  firstName: user.firstName,
+  lastName: user.lastName,
+  email: user.email,
+  role: user.role,
+});
+
+const toUpdateUserInputDTO = (data: UpdateUserInput): UpdateUserInputDTO => ({
+  firstName: data.firstName,
+  lastName: data.lastName,
+  role: data.role,
 });
 
 export const createUserDataServiceAPI = (): UserDataServiceAPI => ({
@@ -16,29 +28,29 @@ export const createUserDataServiceAPI = (): UserDataServiceAPI => ({
     const dto: UserDTO = await apiRequest(`/users/${encodeURIComponent(email)}`, 
     { method: 'GET' }
   );
-    return fromDTO(dto);
+    return fromUserDTO(dto);
   },
 
-  async createUser(data: UpdateUserInputDTO) {
+  async createUser(data: User) {
     const dto: UserDTO = await apiRequest('/users', {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(toUserDTO(data)),
     });
-    return fromDTO(dto);
+    return fromUserDTO(dto);
   },
 
   async updateUser(email, data) {
     const dto: UserDTO = await apiRequest(`/users/${encodeURIComponent(email)}`, {
       method: 'PUT',
-      body: JSON.stringify(data),
+      body: JSON.stringify(toUpdateUserInputDTO(data)),
     });
-    return fromDTO(dto);
+    return fromUserDTO(dto);
   },
 
   async deleteUser(email) {
     const dto: UserDTO = await apiRequest(`/users/${encodeURIComponent(email)}`, {
       method: 'DELETE',
     });
-    return fromDTO(dto);
+    return fromUserDTO(dto);
   },
 });
