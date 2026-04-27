@@ -1,13 +1,26 @@
 import type { Shell, SlotKey } from 'repluggable';
-import { BaseScreen } from '../components/baseScreen/baseScreen';
 import type { Navigation } from '../types/navigation';
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 
 export const ScreensInfraAPI: SlotKey<ScreensInfraAPI> = {
   name: 'Screens Infra API',
   public: true,
   layer: 'INFRA',
 };
+
+export interface SidebarItem {
+  screenName: string;
+  titleKey: string;
+  Icon: ComponentType;
+  order?: number;
+}
+
+export type BaseScreenComponent = (props: {
+  children: ReactNode;
+  titleKey?: string;
+  navigation?: Navigation;
+  goToPrevDisabled?: boolean;
+}) => ReactNode;
 
 export type ScreenGuardProps = {
   navigate: (screen: string) => void;
@@ -16,15 +29,19 @@ export type ScreenGuardProps = {
 
 export type ScreenGuardComponent = (props: ScreenGuardProps) => ReactNode;
 
+export type SidebarHeaderComponent = (props: { collapsed: boolean }) => ReactNode;
+
 export interface ScreensInfraAPI {
   components: {
-    BaseScreen: typeof BaseScreen;
+    BaseScreen: BaseScreenComponent;
   };
   contributeScreen: (
     fromShell: Shell,
     contribution: ContributedScreen,
     definedAsInitial?: boolean,
   ) => void;
+  contributeSidebarItem: (fromShell: Shell, item: SidebarItem) => void;
+  setSidebarHeader: (component: SidebarHeaderComponent) => void;
   getScreens: () => ContributedScreen[];
   getInitialScreen: () => string | undefined;
   setScreenGuard: (guard: ScreenGuardComponent) => void;

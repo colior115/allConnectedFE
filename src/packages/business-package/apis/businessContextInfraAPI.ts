@@ -9,6 +9,7 @@ export const BusinessContextInfraAPI: SlotKey<BusinessContextInfraAPI> = {
 
 export interface BusinessContextValue {
   businessId: string;
+  name: string;
   role: UserRole;
   type: UserBusinessRelationType;
   token: string;

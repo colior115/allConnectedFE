@@ -1,4 +1,4 @@
 export { ScreensInfraAPI } from './apis/screensInfraAPI';
 export { ScreensPackage } from './entrypoints/screensPackage';
-export type { ScreenWithNavigationProps, ContributedScreen } from './apis/screensInfraAPI';
+export type { ScreenWithNavigationProps, ContributedScreen, SidebarItem } from './apis/screensInfraAPI';
 export type { Navigation } from './types/navigation';
