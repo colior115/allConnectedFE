@@ -54,13 +54,13 @@ export const UserPackage: EntryPoint[] = [
         true,
       );
 
-      screensAPI.contributeScreen(shell, {
-        name: 'Register',
-        protected: false,
-        screen: ({ navigation }) => (
-            <RegisterScreen navigation={navigation} onRegister={authFlowsAPI.register} />
-        ),
-      });
+      // screensAPI.contributeScreen(shell, {
+      //   name: 'Register',
+      //   protected: false,
+      //   screen: ({ navigation }) => (
+      //       <RegisterScreen navigation={navigation} onRegister={authFlowsAPI.register} />
+      //   ),
+      // });
     },
   },
 ];
