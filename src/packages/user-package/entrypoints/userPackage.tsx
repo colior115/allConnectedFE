@@ -6,7 +6,6 @@ import { createUserUIAPI } from '../apis/createUserUIAPI';
 import { UserDataServiceAPI } from '../apis/userDataServiceAPI';
 import { UserUIAPI } from '../apis/userUIAPI';
 import { LoginScreen } from '../screens/LoginScreen';
-import { RegisterScreen } from '../screens/RegisterScreen';
 
 export const UserPackage: EntryPoint[] = [
   {
