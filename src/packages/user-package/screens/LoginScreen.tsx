@@ -97,12 +97,12 @@ export function LoginScreen({ navigation, onLogin }: Props) {
           {submitting ? t('auth.loggingIn') : t('auth.loginButton')}
         </Button>
 
-        <Text size="small" color={colors.textSecondary}>
+        {/* <Text size="small" color={colors.textSecondary}>
           {t('auth.noAccount')}{' '}
           <Button type="button" variant="ghost" onClick={() => navigation.navigate('Register')}>
             {t('auth.registerLink')}
           </Button>
-        </Text>
+        </Text> */}
       </form>
     </div>
   );
