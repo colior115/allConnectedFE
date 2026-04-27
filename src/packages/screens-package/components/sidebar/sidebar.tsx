@@ -75,6 +75,7 @@ export function Sidebar({ items, navigation, header: Header }: SidebarProps) {
               paddingInline: collapsed ? '10px' : '14px',
               paddingBlock: '12px',
               borderBottom: `1px solid ${colors.border}`,
+              height: '40px',
             }}
           >
             <Header collapsed={collapsed} />
@@ -84,12 +85,14 @@ export function Sidebar({ items, navigation, header: Header }: SidebarProps) {
         <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingBlock: '8px' }}>
           {items.map(item => {
             const isActive = navigation.currentScreen === item.screenName;
+            const {Icon} = item;
             return (
               <button
                 key={item.screenName}
                 onClick={() => navigation.navigate(item.screenName)}
                 style={{
                   display: 'flex',
+                  height: '40px',
                   alignItems: 'center',
                   justifyContent: collapsed ? 'center' : 'flex-start',
                   gap: '10px',
@@ -110,22 +113,10 @@ export function Sidebar({ items, navigation, header: Header }: SidebarProps) {
                 }}
               >
                 <span
-                  style={{
-                    flexShrink: 0,
-                    display: 'inline-block',
-                    width: '20px',
-                    height: '20px',
-                    backgroundColor: 'currentColor',
-                    maskImage: `url(${item.icon})`,
-                    maskSize: 'contain',
-                    maskRepeat: 'no-repeat',
-                    maskPosition: 'center',
-                    WebkitMaskImage: `url(${item.icon})`,
-                    WebkitMaskSize: 'contain',
-                    WebkitMaskRepeat: 'no-repeat',
-                    WebkitMaskPosition: 'center',
-                  }}
-                />
+                  style={{ flexShrink: 0, display: 'inline-flex', width: '20px', height: '20px' }}
+                >
+                <Icon/>
+                </span>
                 {!collapsed && <span>{t(item.titleKey)}</span>}
               </button>
             );

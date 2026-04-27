@@ -1,6 +1,6 @@
 import type { Shell, SlotKey } from 'repluggable';
 import type { Navigation } from '../types/navigation';
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 
 export const ScreensInfraAPI: SlotKey<ScreensInfraAPI> = {
   name: 'Screens Infra API',
@@ -11,7 +11,7 @@ export const ScreensInfraAPI: SlotKey<ScreensInfraAPI> = {
 export interface SidebarItem {
   screenName: string;
   titleKey: string;
-  icon: string;
+  Icon: ComponentType;
   order?: number;
 }
 

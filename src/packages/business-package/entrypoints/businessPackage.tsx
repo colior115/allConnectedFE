@@ -3,7 +3,7 @@ import { AuthFlowsAPI } from '../../auth-package';
 import { EmployeeUIAPI } from '../../employee-package';
 import { MainViewInfraAPI } from '../../main-view-package';
 import { ScreensInfraAPI } from '../../screens-package';
-import dashboardIcon from '../../../assets/images/dashboard.svg';
+import Dashboard from '../../../assets/images/icons/dashboard.svg?react';
 import { BusinessContextInfraAPI } from '../apis/businessContextInfraAPI';
 import { BusinessDataServiceAPI } from '../apis/businessDataServiceAPI';
 import { createBusinessContextInfraAPI } from '../apis/createBusinessContextInfraAPI';
@@ -80,7 +80,7 @@ export const BusinessPackage: EntryPoint[] = [
       screensAPI.contributeSidebarItem(shell, {
         screenName: 'Dashboard',
         titleKey: 'dashboard.title',
-        icon: dashboardIcon,
+        Icon: Dashboard,
         order: 1,
       });
 

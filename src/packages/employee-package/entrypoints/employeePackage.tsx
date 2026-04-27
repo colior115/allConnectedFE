@@ -1,7 +1,7 @@
 import type { EntryPoint } from 'repluggable';
 import { UserDataServiceAPI } from '../../user-package';
 import { ScreensInfraAPI } from '../../screens-package';
-import employeesIcon from '../../../assets/images/employees.svg';
+import EmployeesIcon from '../../../assets/images/icons/employees.svg?react';
 import { EmployeeDataServiceAPI } from '../apis/employeeDataServiceAPI';
 import { createEmployeeDataServiceAPI } from '../apis/createEmployeeDataServiceAPI';
 import { EmployeeUIAPI } from '../apis/employeeUIAPI';
@@ -47,7 +47,7 @@ export const EmployeePackage: EntryPoint[] = [
       screensAPI.contributeSidebarItem(shell, {
         screenName: 'EmployeesList',
         titleKey: 'employee.listTitle',
-        icon: employeesIcon,
+        Icon: EmployeesIcon,
         order: 2,
       });
 
