@@ -3,11 +3,13 @@ import { AuthFlowsAPI } from '../../auth-package';
 import { EmployeeUIAPI } from '../../employee-package';
 import { MainViewInfraAPI } from '../../main-view-package';
 import { ScreensInfraAPI } from '../../screens-package';
+import dashboardIcon from '../../../assets/images/dashboard.svg';
 import { BusinessContextInfraAPI } from '../apis/businessContextInfraAPI';
 import { BusinessDataServiceAPI } from '../apis/businessDataServiceAPI';
 import { createBusinessContextInfraAPI } from '../apis/createBusinessContextInfraAPI';
 import { createBusinessDataServiceAPI } from '../apis/createBusinessDataServiceAPI';
 import { BusinessProvider } from '../context/BusinessContext';
+import { BusinessSidebarHeader } from '../components/BusinessSidebarHeader';
 import { AddEmployeeScreen } from '../screens/AddEmployeeScreen';
 import { BusinessPickerScreen } from '../screens/BusinessPickerScreen';
 import { DashboardScreen } from '../screens/DashboardScreen';
@@ -73,16 +75,25 @@ export const BusinessPackage: EntryPoint[] = [
       const employeeUIAPI = shell.getAPI(EmployeeUIAPI);
       const { BaseScreen } = screensAPI.components;
 
+      screensAPI.setSidebarHeader(BusinessSidebarHeader);
+
+      screensAPI.contributeSidebarItem(shell, {
+        screenName: 'Dashboard',
+        titleKey: 'dashboard.title',
+        icon: dashboardIcon,
+        order: 1,
+      });
+
       screensAPI.contributeScreen(shell, {
         name: 'BusinessPicker',
         screen: ({ navigation }) => (
-          <BaseScreen titleKey="businessPicker.title">
+          <BaseScreen titleKey="businessPicker.title" goToPrevDisabled={true}>
             <BusinessPickerScreen
               navigation={navigation}
               getUserBusinesses={businessDataAPI.getUserBusinesses}
               onSelectBusiness={async (business, role, type) => {
                 const token = await businessDataAPI.connectToBusiness(business.id);
-                businessContextAPI.setBusinessContext({ businessId: business.id, role, type, token });
+                businessContextAPI.setBusinessContext({ businessId: business.id, name: business.name, role, type, token });
               }}
             />
           </BaseScreen>
@@ -92,7 +103,7 @@ export const BusinessPackage: EntryPoint[] = [
       screensAPI.contributeScreen(shell, {
         name: 'Dashboard',
         screen: ({ navigation }) => (
-          <BaseScreen navigation={navigation} titleKey="dashboard.title">
+          <BaseScreen navigation={navigation} titleKey="dashboard.title" goToPrevDisabled={true}>
             <DashboardScreen navigation={navigation} onLogout={authFlowsAPI.logout} />
           </BaseScreen>
         ),

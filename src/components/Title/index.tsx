@@ -8,6 +8,7 @@ interface TitleProps {
   size: TitleSize;
   children: ReactNode;
   color?: string;
+  ellipsis?: boolean;
 }
 
 const sizeMap: Record<TitleSize, { tag: 'h1' | 'h2' | 'h3'; typographyKey: keyof typeof typography }> = {
@@ -16,7 +17,7 @@ const sizeMap: Record<TitleSize, { tag: 'h1' | 'h2' | 'h3'; typographyKey: keyof
   small: { tag: 'h3', typographyKey: 'h3' },
 };
 
-export default function Title({ size, children, color }: TitleProps) {
+export default function Title({ size, children, color, ellipsis }: TitleProps) {
   const { tag: Tag, typographyKey } = sizeMap[size];
   const token = typography[typographyKey] as { fontSize: string; fontWeight: number };
 
@@ -26,6 +27,9 @@ export default function Title({ size, children, color }: TitleProps) {
     fontSize: token.fontSize,
     fontWeight: token.fontWeight,
     color: color ?? colors.textPrimary,
+    overflow: ellipsis ? 'hidden' : undefined,
+    textOverflow: ellipsis ? 'ellipsis' : undefined,
+    whiteSpace: ellipsis ? 'nowrap' : undefined,
   };
 
   return <Tag style={style}>{children}</Tag>;

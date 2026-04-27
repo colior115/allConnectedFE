@@ -1,21 +1,26 @@
 import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from '../../../../components';
+import { IconButton, Title } from '../../../../components';
 import { colors } from '../../../../styles/theme/colors';
 import { typography } from '../../../../styles/theme/typography';
 import type { Navigation } from '../../types/navigation';
+import type { SidebarHeaderComponent, SidebarItem } from '../../apis/screensInfraAPI';
+import { Sidebar } from '../sidebar/sidebar';
 
-interface BaseScreenProps {
+export interface BaseScreenProps {
   children: ReactNode;
   titleKey?: string;
   navigation?: Navigation;
+  goToPrevDisabled?: boolean;
+  sidebarItems?: SidebarItem[];
+  sidebarHeader?: SidebarHeaderComponent;
 }
 
-function BackButton({ navigation }: { navigation: Navigation }) {
+function BackButton({ navigation, goToPrevDisabled }: { navigation: Navigation; goToPrevDisabled?: boolean }) {
   const { i18n } = useTranslation();
   const isRtl = i18n.dir() === 'rtl';
 
-  if (!navigation.canGoBack()) return null;
+  if (!navigation.canGoBack() || goToPrevDisabled) return null;
 
   return (
     <IconButton
@@ -42,33 +47,38 @@ function BackButton({ navigation }: { navigation: Navigation }) {
   );
 }
 
-export function BaseScreen({ children, titleKey, navigation }: BaseScreenProps) {
+export function BaseScreen({ children, titleKey, navigation, sidebarItems, sidebarHeader, goToPrevDisabled }: BaseScreenProps) {
   const { t } = useTranslation();
   const title = titleKey ? t(titleKey) : undefined;
-  const showHeader = title || (navigation && navigation.canGoBack());
+  const showHeader = title || (goToPrevDisabled && navigation && navigation.canGoBack());
+  const showSidebar = sidebarItems && sidebarItems.length > 0 && navigation;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      {showHeader && (
-        <header style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          paddingBlock: '16px',
-          paddingInline: '24px',
-          borderBottom: `1px solid ${colors.border}`,
-        }}>
-          {navigation && <BackButton navigation={navigation} />}
-          {title && (
-            <h1 style={{ margin: 0, ...typography.h3, fontFamily: typography.fontFamily, color: colors.textPrimary }}>
-              {title}
-            </h1>
-          )}
-        </header>
-      )}
-      <main style={{ flex: 1, overflow: 'auto', padding: '24px' }}>
-        {children}
-      </main>
+    <div style={{ display: 'flex', flexDirection: 'row', height: '100%', overflow: 'hidden' }}>
+      {showSidebar && <Sidebar items={sidebarItems} navigation={navigation} header={sidebarHeader} />}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
+        {showHeader && (
+          <header
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              paddingBlock: '16px',
+              paddingInline: '24px',
+              borderBottom: `1px solid ${colors.border}`,
+              flexShrink: 0,
+            }}
+          >
+            {!goToPrevDisabled && navigation && <BackButton navigation={navigation} />}
+            {title && (
+              <Title size="small">
+                {title}
+              </Title>
+            )}
+          </header>
+        )}
+        <main style={{ flex: 1, overflow: 'auto', padding: '24px' }}>{children}</main>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
+import React from 'react';
 import type { Shell, SlotKey } from 'repluggable';
-import { BaseScreen } from '../components/baseScreen/baseScreen';
-import type { ContributedScreen, ScreenGuardComponent, ScreensInfraAPI } from './screensInfraAPI';
+import { BaseScreen, type BaseScreenProps } from '../components/baseScreen/baseScreen';
+import type { BaseScreenComponent, ContributedScreen, ScreenGuardComponent, ScreensInfraAPI, SidebarHeaderComponent, SidebarItem } from './screensInfraAPI';
 
 export const screensSlotKey: SlotKey<ContributedScreen> = {
   name: 'contributedScreen',
@@ -10,21 +11,43 @@ export const initScreenSlotKey: SlotKey<string> = {
   name: 'contributedInitialScreen',
 };
 
+export const sideBarItemSlotKey: SlotKey<SidebarItem> = {
+  name: 'contributedSidebarItem',
+};
+
 export const createScreensInfraAPI = (shell: Shell): ScreensInfraAPI => {
   const componentsSlot = shell.declareSlot(screensSlotKey);
   const initScreenSlot = shell.declareSlot(initScreenSlotKey);
   let screenGuard: ScreenGuardComponent | undefined;
+  let sidebarHeader: SidebarHeaderComponent | undefined;
+
+  const sidebarItemsSlot = shell.declareSlot(sideBarItemSlotKey);
+
+  const BoundBaseScreen: BaseScreenComponent = (props) =>
+    React.createElement(BaseScreen, { ...props, sidebarItems: [...sidebarItemsSlot.getItems()].map(item => item.contribution).sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity)),
+      sidebarHeader } as BaseScreenProps);
 
   return {
     components: {
-      BaseScreen,
+      BaseScreen: BoundBaseScreen,
     },
+
+    contributeSidebarItem(_fromShell, item) {
+      sidebarItemsSlot.contribute(_fromShell, item);
+    },
+
+    setSidebarHeader(component) {
+      sidebarHeader = component;
+    },
+
     setScreenGuard(guard) {
       screenGuard = guard;
     },
+
     getScreenGuard() {
       return screenGuard;
     },
+
     contributeScreen(fromShell, contribution, definedAsInitial = false) {
       if (definedAsInitial) {
         const isInitialScreenExist = initScreenSlot.getItems().length > 0;
@@ -45,10 +68,12 @@ export const createScreensInfraAPI = (shell: Shell): ScreensInfraAPI => {
       }
       componentsSlot.contribute(fromShell, contribution);
     },
+
     getScreens: () => {
       const screens = componentsSlot.getItems().map(item => item.contribution);
       return screens;
     },
+
     getInitialScreen: () => {
       const initialScreenName = initScreenSlot.getSingleItem()?.contribution;
       return initialScreenName;

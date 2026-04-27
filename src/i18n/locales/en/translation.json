@@ -56,6 +56,10 @@
     "colLastName": "Last Name",
     "colRole": "Role"
   },
+  "role": {
+    "admin": "Admin",
+    "user": "User"
+  },
   "noPermission": {
     "title": "Access Denied",
     "message": "You don't have permission to view this page."

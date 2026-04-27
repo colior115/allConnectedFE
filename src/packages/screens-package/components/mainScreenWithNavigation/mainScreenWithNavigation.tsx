@@ -20,6 +20,10 @@ export function MainScreenWithNavigation({ getInitialScreen, getScreens, getScre
     setStack(prev => [...prev, { name: screenName, state }]);
   }, []);
 
+  const navigateRoot = useCallback((screenName: string) => {
+    setStack([{ name: screenName }]);
+  }, []);
+
   const goBack = useCallback(() => {
     setStack(prev => (prev.length > 1 ? prev.slice(0, -1) : prev));
   }, []);
@@ -29,8 +33,8 @@ export function MainScreenWithNavigation({ getInitialScreen, getScreens, getScre
   const getState = useCallback(() => currentEntry?.state, [currentEntry]);
 
   const navigation: Navigation = useMemo(
-    () => ({ navigate, goBack, canGoBack, currentScreen: currentName, getState }),
-    [navigate, goBack, canGoBack, currentName, getState],
+    () => ({ navigate, navigateRoot, goBack, canGoBack, currentScreen: currentName, getState }),
+    [navigate, navigateRoot, goBack, canGoBack, currentName, getState],
   );
 
   if (!currentScreen) return null;

@@ -56,6 +56,10 @@
     "colLastName": "שם משפחה",
     "colRole": "תפקיד"
   },
+  "role": {
+    "admin": "מנהל",
+    "user": "משתמש"
+  },
   "noPermission": {
     "title": "גישה נדחתה",
     "message": "אין לך הרשאה לצפות בדף זה."

@@ -1,10 +1,10 @@
 import type { EntryPoint } from 'repluggable';
 import { AuthFlowsAPI } from '../../auth-package';
 import { ScreensInfraAPI } from '../../screens-package';
-import { UserDataServiceAPI } from '../apis/userDataServiceAPI';
 import { createUserDataServiceAPI } from '../apis/createUserDataServiceAPI';
-import { UserUIAPI } from '../apis/userUIAPI';
 import { createUserUIAPI } from '../apis/createUserUIAPI';
+import { UserDataServiceAPI } from '../apis/userDataServiceAPI';
+import { UserUIAPI } from '../apis/userUIAPI';
 import { LoginScreen } from '../screens/LoginScreen';
 import { RegisterScreen } from '../screens/RegisterScreen';
 
@@ -41,7 +41,6 @@ export const UserPackage: EntryPoint[] = [
     extend(shell) {
       const screensAPI = shell.getAPI(ScreensInfraAPI);
       const authFlowsAPI = shell.getAPI(AuthFlowsAPI);
-      const { BaseScreen } = screensAPI.components;
 
       screensAPI.contributeScreen(
         shell,
@@ -49,9 +48,7 @@ export const UserPackage: EntryPoint[] = [
           name: 'Login',
           protected: false,
           screen: ({ navigation }) => (
-            <BaseScreen>
-              <LoginScreen navigation={navigation} onLogin={authFlowsAPI.login} />
-            </BaseScreen>
+              <LoginScreen navigation={navigation} onLogin={authFlowsAPI.login}/>
           ),
         },
         true,
@@ -61,9 +58,7 @@ export const UserPackage: EntryPoint[] = [
         name: 'Register',
         protected: false,
         screen: ({ navigation }) => (
-          <BaseScreen>
             <RegisterScreen navigation={navigation} onRegister={authFlowsAPI.register} />
-          </BaseScreen>
         ),
       });
     },

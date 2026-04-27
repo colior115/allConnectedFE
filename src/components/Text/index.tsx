@@ -7,6 +7,8 @@ type TextSize = 'large' | 'normal' | 'small';
 interface TextProps {
   size?: TextSize;
   children: ReactNode;
+  ellipsis?: boolean;
+  type?: 'primary' | 'secondary' | 'error';
   color?: string;
 }
 
@@ -16,7 +18,7 @@ const sizeMap: Record<TextSize, keyof typeof typography> = {
   small: 'small',
 };
 
-export default function Text({ size = 'normal', children, color }: TextProps) {
+export default function Text({ size = 'normal', children, type = 'primary', ellipsis = false, color }: TextProps) {
   const token = typography[sizeMap[size]] as { fontSize: string; fontWeight: number };
 
   const style: CSSProperties = {
@@ -24,7 +26,10 @@ export default function Text({ size = 'normal', children, color }: TextProps) {
     fontFamily: typography.fontFamily,
     fontSize: token.fontSize,
     fontWeight: token.fontWeight,
-    color: color ?? colors.textSecondary,
+    color: color ?? (type === 'primary' ? colors.textPrimary : type === 'secondary' ? colors.textSecondary : colors.error),
+    whiteSpace: ellipsis ? 'nowrap' : undefined,
+    overflow: ellipsis ? 'hidden' : undefined,
+    textOverflow: ellipsis ? 'ellipsis' : undefined,
   };
 
   return <p style={style}>{children}</p>;

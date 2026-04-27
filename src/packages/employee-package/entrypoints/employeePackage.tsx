@@ -1,6 +1,7 @@
 import type { EntryPoint } from 'repluggable';
 import { UserDataServiceAPI } from '../../user-package';
 import { ScreensInfraAPI } from '../../screens-package';
+import employeesIcon from '../../../assets/images/employees.svg';
 import { EmployeeDataServiceAPI } from '../apis/employeeDataServiceAPI';
 import { createEmployeeDataServiceAPI } from '../apis/createEmployeeDataServiceAPI';
 import { EmployeeUIAPI } from '../apis/employeeUIAPI';
@@ -43,10 +44,17 @@ export const EmployeePackage: EntryPoint[] = [
       const employeeDataAPI = shell.getAPI(EmployeeDataServiceAPI);
       const { BaseScreen } = screensAPI.components;
 
+      screensAPI.contributeSidebarItem(shell, {
+        screenName: 'EmployeesList',
+        titleKey: 'employee.listTitle',
+        icon: employeesIcon,
+        order: 2,
+      });
+
       screensAPI.contributeScreen(shell, {
         name: 'EmployeesList',
         screen: ({ navigation }) => (
-          <BaseScreen navigation={navigation} titleKey="employee.listTitle">
+          <BaseScreen navigation={navigation} titleKey="employee.listTitle" goToPrevDisabled={true}>
             <EmployeesListScreen
               navigation={navigation}
               getEmployees={employeeDataAPI.getEmployees}
