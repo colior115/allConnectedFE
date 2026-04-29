@@ -1,8 +1,7 @@
 import { apiRequest } from '../../../services/apiClient';
-import type { EmployeeDataServiceAPI } from './employeeDataServiceAPI';
+import type { EmployeeDataServiceAPI, GetEmployeesParams, PaginatedEmployees } from './employeeDataServiceAPI';
 import type { Employee } from '../types/employee';
 import type { EmployeeDTO, CreateEmployeeInputDTO, UpdateEmployeeInputDTO } from '../types/employeeDTO';
-import type { EmployeeRelation } from '../types/employeeRelation';
 
 const fromDTO = (dto: EmployeeDTO): Employee => ({
   id: dto.id,
@@ -15,12 +14,16 @@ const base = (businessId: string) =>
   `/businessManager/employee/${encodeURIComponent(businessId)}`;
 
 export const createEmployeeDataServiceAPI = (): EmployeeDataServiceAPI => ({
-  async getEmployees(businessId) {
-    const relations: EmployeeRelation[] = await apiRequest(
-      `/businessManager/employees/${encodeURIComponent(businessId)}`,
+  async getEmployees(businessId, params?: GetEmployeesParams): Promise<PaginatedEmployees> {
+    const query = new URLSearchParams();
+    if (params?.page !== undefined) query.set('page', String(params.page));
+    if (params?.limit !== undefined) query.set('limit', String(params.limit));
+    if (params?.search) query.set('search', params.search);
+    const qs = query.size > 0 ? `?${query.toString()}` : '';
+    return apiRequest(
+      `/businessManager/employees/${encodeURIComponent(businessId)}${qs}`,
       { method: 'GET' },
     );
-    return relations;
   },
 
   async getEmployeeById(employeeId) {

@@ -54,11 +54,17 @@
     "colEmail": "Email",
     "colFirstName": "First Name",
     "colLastName": "Last Name",
-    "colRole": "Role"
+    "colRole": "Role",
+    "searchPlaceholder": "Search employees…"
   },
   "role": {
     "admin": "Admin",
     "user": "User"
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "of": "of"
   },
   "noPermission": {
     "title": "Access Denied",

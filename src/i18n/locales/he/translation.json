@@ -54,11 +54,17 @@
     "colEmail": "אימייל",
     "colFirstName": "שם פרטי",
     "colLastName": "שם משפחה",
-    "colRole": "תפקיד"
+    "colRole": "תפקיד",
+    "searchPlaceholder": "חיפוש עובדים…"
   },
   "role": {
     "admin": "מנהל",
     "user": "משתמש"
+  },
+  "pagination": {
+    "prev": "הקודם",
+    "next": "הבא",
+    "of": "מתוך"
   },
   "noPermission": {
     "title": "גישה נדחתה",

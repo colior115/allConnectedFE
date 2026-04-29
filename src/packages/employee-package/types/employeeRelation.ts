@@ -1,16 +1,16 @@
 import type { UserRole, UserBusinessRelationType } from '../../business-package';
 
-export interface EmployeeRelationUser {
+export interface EmployeeRelationUserDTO {
   firstName: string;
   lastName: string;
   email: string;
   role: UserRole;
 }
 
-export interface EmployeeRelation {
+export interface EmployeeRelationDTO {
   businessId: string;
   role: UserRole;
   type: UserBusinessRelationType;
   reference: string;
-  user: EmployeeRelationUser;
+  user: EmployeeRelationUserDTO;
 }

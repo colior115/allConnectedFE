@@ -1,6 +1,6 @@
 import type { SlotKey } from 'repluggable';
 import type { CreateEmployeeInput, Employee, UpdateEmployeeInput } from '../types/employee';
-import type { EmployeeRelation } from '../types/employeeRelation';
+import type { EmployeeRelationDTO } from '../types/employeeRelation';
 
 export const EmployeeDataServiceAPI: SlotKey<EmployeeDataServiceAPI> = {
   name: 'Employee Data Service API',
@@ -8,8 +8,21 @@ export const EmployeeDataServiceAPI: SlotKey<EmployeeDataServiceAPI> = {
   layer: 'DATA_SERVICE',
 };
 
+export interface GetEmployeesParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+}
+
+export interface PaginatedEmployees {
+  data: EmployeeRelationDTO[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 export interface EmployeeDataServiceAPI {
-  getEmployees(businessId: string): Promise<EmployeeRelation[]>;
+  getEmployees(businessId: string, params?: GetEmployeesParams): Promise<PaginatedEmployees>;
   getEmployeeById(employeeId: string): Promise<Employee>;
   getEmployee(businessId: string, userEmail: string): Promise<Employee>;
   createEmployee(businessId: string, userEmail: string, data: CreateEmployeeInput): Promise<Employee>;

@@ -5,7 +5,7 @@ import { colors } from '../../../styles/theme/colors';
 import type { ScreenWithNavigationProps } from '../../screens-package';
 import type { EmployeeDataServiceAPI } from '../apis/employeeDataServiceAPI';
 import type { Employee } from '../types/employee';
-import type { EmployeeRelation } from '../types/employeeRelation';
+import type { EmployeeRelationDTO } from '../types/employeeRelation';
 
 interface Props extends ScreenWithNavigationProps {
   getEmployeeById: EmployeeDataServiceAPI['getEmployeeById'];
@@ -22,7 +22,7 @@ function Field({ label, value }: { label: string; value: string | number }) {
 
 export function EmployeeViewerScreen({ navigation, getEmployeeById }: Props) {
   const { t } = useTranslation();
-  const relation = navigation.getState() as EmployeeRelation | undefined;
+  const relation = navigation.getState() as EmployeeRelationDTO | undefined;
 
   const [employee, setEmployee] = useState<Employee | null>(null);
   const [loading, setLoading] = useState(true);

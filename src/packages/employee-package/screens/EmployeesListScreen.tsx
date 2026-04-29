@@ -1,12 +1,15 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loader, Text } from '../../../components';
+import { Loader, Pagination, Text } from '../../../components';
+import { EmployeesToolbox } from '../components/EmployeesToolbox';
 import { colors } from '../../../styles/theme/colors';
 import { typography } from '../../../styles/theme/typography';
 import { useBusinessContext } from '../../business-package';
 import type { ScreenWithNavigationProps } from '../../screens-package';
 import type { EmployeeDataServiceAPI } from '../apis/employeeDataServiceAPI';
-import type { EmployeeRelation } from '../types/employeeRelation';
+import type { EmployeeRelationDTO } from '../types/employeeRelation';
+
+const PAGE_LIMIT = 20;
 
 interface Props extends ScreenWithNavigationProps {
   getEmployees: EmployeeDataServiceAPI['getEmployees'];
@@ -34,20 +37,34 @@ const tdStyle: CSSProperties = {
 export function EmployeesListScreen({ navigation, getEmployees }: Props) {
   const { t } = useTranslation();
   const businessContext = useBusinessContext();
-  const [relations, setRelations] = useState<EmployeeRelation[]>([]);
+  const [relations, setRelations] = useState<EmployeeRelationDTO[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (!businessContext?.businessId) return;
-    getEmployees(businessContext.businessId)
-      .then(setRelations)
+    setLoading(true);
+    setError(null);
+    getEmployees(businessContext.businessId, { page, limit: PAGE_LIMIT, search: search || undefined })
+      .then(({ data, total: tot }) => { setRelations(data || []); setTotal(tot || 0); })
       .catch(() => setError(t('employee.errorList')))
       .finally(() => setLoading(false));
-  }, [businessContext?.businessId]);
+  }, [businessContext?.businessId, page, search]);
+
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    setPage(1);
+  };
 
   return (
     <div style={{ paddingInline: '2rem', paddingBlock: '2rem' }}>
+      <div style={{ marginBlockEnd: '1.5rem' }}>
+        <EmployeesToolbox navigation={navigation} onSearch={handleSearch} />
+      </div>
+
       {loading && (
         <div style={{ display: 'flex', justifyContent: 'center', paddingBlock: '3rem' }}>
           <Loader />
@@ -88,6 +105,12 @@ export function EmployeesListScreen({ navigation, getEmployees }: Props) {
               ))}
             </tbody>
           </table>
+          <Pagination
+            page={page}
+            total={total}
+            limit={PAGE_LIMIT}
+            onChange={setPage}
+          />
         </div>
       )}
     </div>
