@@ -1,5 +1,5 @@
 import type { SlotKey } from 'repluggable';
-import type { Business, BusinessPublic, UserBusinessRelation } from '../types/business';
+import type { Business, BusinessPublic, BusinessRelationEnriched } from '../types/business';
 
 export const BusinessDataServiceAPI: SlotKey<BusinessDataServiceAPI> = {
   name: 'Business Data Service API',
@@ -11,7 +11,7 @@ export interface BusinessDataServiceAPI {
   getPublicDetails(id: string): Promise<BusinessPublic>;
   getAll(): Promise<Business[]>;
   getById(id: string): Promise<Business>;
-  getUserBusinesses(userEmail: string): Promise<UserBusinessRelation[]>;
+  getUserBusinesses(): Promise<BusinessRelationEnriched[]>;
   connectToBusiness(id: string): Promise<string>;
   create(name: string, businessId: string): Promise<Business>;
   update(id: string, name: string): Promise<Business>;

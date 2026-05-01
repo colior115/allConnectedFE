@@ -1,12 +1,20 @@
-export type SalaryType = 'hourly' | 'monthly' | 'annual';
-
 export interface Employee {
   id: string;
-  salaryType: SalaryType;
-  salaryValue: number;
-  currency: string;
+  businessId: string;
+  firstName: string;
+  lastName: string;
+  gender: Gender;
+  hireDate: string;
+  employmentStatus: EmploymentStatus;
+  employeeId: string;
+  email?: string;
+  phone?: string;
+  terminationDate?: string;
 }
 
 export type CreateEmployeeInput = Omit<Employee, 'id'>;
 
 export type UpdateEmployeeInput = Partial<CreateEmployeeInput>;
+
+export type Gender = "male" | "female" | "other" | "prefer_not_to_say";
+export type EmploymentStatus = "active" | "inactive" | "terminated" | "on_leave";

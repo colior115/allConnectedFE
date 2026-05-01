@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { colors } from '../../../styles/theme/colors';
 import { typography } from '../../../styles/theme/typography';
 import { useBusinessContext } from '../context/BusinessContext';
@@ -9,7 +8,6 @@ interface Props {
 }
 
 export function BusinessSidebarHeader({ collapsed }: Props) {
-  const { t } = useTranslation();
   const ctx = useBusinessContext();
 
   const initial = (ctx?.name ?? ctx?.businessId ?? '?')[0].toUpperCase();
@@ -47,7 +45,7 @@ export function BusinessSidebarHeader({ collapsed }: Props) {
         </Text>
         {ctx?.role && (
           <Text size="small" type="secondary" ellipsis>
-            {t(`role.${ctx.role}`)}
+            {ctx.role.roleName}
           </Text>
         )}
       </div>

@@ -1,7 +1,7 @@
 import { apiRequest } from '../../../services/apiClient';
+import type { Business, BusinessPublic, BusinessRelationEnriched as BusinessRelationEnriched } from '../types/business';
+import type { BusinessDTO, BusinessPublicDetailsDTO, UserBusinessRelationEnrichedDTO as BusinessRelationEnrichedDTO } from '../types/businessDTO';
 import type { BusinessDataServiceAPI } from './businessDataServiceAPI';
-import type { Business, BusinessPublic, UserBusinessRelation } from '../types/business';
-import type { BusinessDTO, BusinessPublicDetailsDTO, UserBusinessRelationDTO } from '../types/businessDTO';
 
 const fromDTO = (dto: BusinessDTO): Business => ({
   id: dto.id,
@@ -14,10 +14,15 @@ const fromPublicDTO = (dto: BusinessPublicDetailsDTO): BusinessPublic => ({
   name: dto.name,
 });
 
-const fromUserBusinessRelationDTO = (dto: UserBusinessRelationDTO): UserBusinessRelation => ({
+const fromEnrichedRelationDTO = (dto: BusinessRelationEnrichedDTO): BusinessRelationEnriched => ({
+  id: dto.id,
+  userId: dto.userId,
   business: fromDTO(dto.business),
-  role: dto.role,
-  type: dto.type,
+  role: {
+    id: dto.role.id,
+    roleName: dto.role.roleName,
+    permissions: dto.role.permissions,
+  },
 });
 
 export const createBusinessDataServiceAPI = (): BusinessDataServiceAPI => ({
@@ -31,13 +36,16 @@ export const createBusinessDataServiceAPI = (): BusinessDataServiceAPI => ({
     return dtos.map(fromDTO);
   },
 
-  async getUserBusinesses(userEmail) {
-    const dtos: UserBusinessRelationDTO[] = await apiRequest(`/businessManager/relations/${encodeURIComponent(userEmail)}/all`);
-    return dtos.map(fromUserBusinessRelationDTO);
+  async getUserBusinesses() {
+    const dtos: BusinessRelationEnrichedDTO[] = await apiRequest('/businessRelation/user/businesses');
+    return dtos.map(fromEnrichedRelationDTO);
   },
 
-  async connectToBusiness(id) {
-    const { token } = await apiRequest(`/businessManager/connect/${id}`);
+  async connectToBusiness(businessId) {
+    const { token } = await apiRequest('/businessRelation/connect', {
+      method: 'POST',
+      body: JSON.stringify({ businessId }),
+    });
     return token as string;
   },
 
@@ -47,7 +55,7 @@ export const createBusinessDataServiceAPI = (): BusinessDataServiceAPI => ({
   },
 
   async create(name, businessId) {
-    const dto: BusinessDTO = await apiRequest('/businessManager', {
+    const dto: BusinessDTO = await apiRequest('/business', {
       method: 'POST',
       body: JSON.stringify({ name, businessId }),
     });
@@ -63,9 +71,7 @@ export const createBusinessDataServiceAPI = (): BusinessDataServiceAPI => ({
   },
 
   async delete(id) {
-    const dto: BusinessDTO = await apiRequest(`/business/${id}`, {
-      method: 'DELETE',
-    });
+    const dto: BusinessDTO = await apiRequest(`/business/${id}`, { method: 'DELETE' });
     return fromDTO(dto);
   },
 });

@@ -34,15 +34,23 @@
     "error": "טעינת עסקים נכשלה"
   },
   "employee": {
-    "salaryType": "סוג שכר",
-    "salaryValue": "שכר",
-    "currency": "מטבע",
-    "hourly": "שעתי",
-    "monthly": "חודשי",
-    "annual": "שנתי",
-    "addDetails": "הוסף פרטי עובד",
     "adding": "מוסיף…",
     "add": "הוסף",
+    "addDetails": "הוסף פרטי עובד",
+    "employeeId": "מזהה עובד",
+    "phone": "טלפון",
+    "gender": "מגדר",
+    "gender_male": "זכר",
+    "gender_female": "נקבה",
+    "gender_other": "אחר",
+    "gender_prefer_not_to_say": "מעדיף לא לציין",
+    "hireDate": "תאריך קליטה",
+    "employmentStatus": "סטטוס העסקה",
+    "status_active": "פעיל",
+    "status_inactive": "לא פעיל",
+    "status_terminated": "סיים עבודה",
+    "status_on_leave": "בחופשה",
+    "terminationDate": "תאריך סיום",
     "listTitle": "עובדים",
     "viewEmployees": "צפה בעובדים",
     "viewerTitle": "פרטי עובד",
@@ -65,6 +73,11 @@
     "prev": "הקודם",
     "next": "הבא",
     "of": "מתוך"
+  },
+  "validation": {
+    "invalidEmail": "יש להזין כתובת אימייל תקינה",
+    "invalidName": "חייב להכיל לפחות 2 תווים (אותיות בלבד)",
+    "invalidPhone": "יש להזין מספר טלפון תקין (לפחות 7 ספרות)"
   },
   "noPermission": {
     "title": "גישה נדחתה",

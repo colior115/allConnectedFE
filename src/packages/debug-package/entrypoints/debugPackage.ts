@@ -33,7 +33,7 @@ export const DebugPackage: EntryPoint[] = [
         apis[toKey(key.name)] = impl();
       }
 
-      (window as unknown as Record<string, unknown>).d = { apis };
+      (window as unknown as Record<string, unknown>).apis = apis;
     },
   },
 ];

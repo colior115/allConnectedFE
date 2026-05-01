@@ -34,15 +34,23 @@
     "error": "Failed to load businesses"
   },
   "employee": {
-    "salaryType": "Salary Type",
-    "salaryValue": "Salary",
-    "currency": "Currency",
-    "hourly": "Hourly",
-    "monthly": "Monthly",
-    "annual": "Annual",
-    "addDetails": "Add Employee Details",
     "adding": "Adding…",
     "add": "Add",
+    "addDetails": "Add Employee Details",
+    "employeeId": "Employee ID",
+    "phone": "Phone",
+    "gender": "Gender",
+    "gender_male": "Male",
+    "gender_female": "Female",
+    "gender_other": "Other",
+    "gender_prefer_not_to_say": "Prefer not to say",
+    "hireDate": "Hire Date",
+    "employmentStatus": "Employment Status",
+    "status_active": "Active",
+    "status_inactive": "Inactive",
+    "status_terminated": "Terminated",
+    "status_on_leave": "On Leave",
+    "terminationDate": "Termination Date",
     "listTitle": "Employees",
     "viewEmployees": "View Employees",
     "viewerTitle": "Employee Details",
@@ -65,6 +73,11 @@
     "prev": "Previous",
     "next": "Next",
     "of": "of"
+  },
+  "validation": {
+    "invalidEmail": "Enter a valid email address",
+    "invalidName": "Must be at least 2 characters (letters only)",
+    "invalidPhone": "Enter a valid phone number (min 7 digits)"
   },
   "noPermission": {
     "title": "Access Denied",

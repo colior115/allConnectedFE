@@ -7,7 +7,7 @@ import { typography } from '../../../styles/theme/typography';
 import { useBusinessContext } from '../../business-package';
 import type { ScreenWithNavigationProps } from '../../screens-package';
 import type { EmployeeDataServiceAPI } from '../apis/employeeDataServiceAPI';
-import type { EmployeeRelationDTO } from '../types/employeeRelation';
+import type { Employee } from '../types/employee';
 
 const PAGE_LIMIT = 20;
 
@@ -37,7 +37,7 @@ const tdStyle: CSSProperties = {
 export function EmployeesListScreen({ navigation, getEmployees }: Props) {
   const { t } = useTranslation();
   const businessContext = useBusinessContext();
-  const [relations, setRelations] = useState<EmployeeRelationDTO[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +49,7 @@ export function EmployeesListScreen({ navigation, getEmployees }: Props) {
     setLoading(true);
     setError(null);
     getEmployees(businessContext.businessId, { page, limit: PAGE_LIMIT, search: search || undefined })
-      .then(({ data, total: tot }) => { setRelations(data || []); setTotal(tot || 0); })
+      .then(({ data, total: tot }) => { setEmployees(data || []); setTotal(tot || 0); })
       .catch(() => setError(t('employee.errorList')))
       .finally(() => setLoading(false));
   }, [businessContext?.businessId, page, search]);
@@ -73,34 +73,34 @@ export function EmployeesListScreen({ navigation, getEmployees }: Props) {
 
       {error && <Text color={colors.error}>{error}</Text>}
 
-      {!loading && !error && relations.length === 0 && (
+      {!loading && !error && employees.length === 0 && (
         <Text color={colors.textSecondary}>{t('employee.noEmployees')}</Text>
       )}
 
-      {!loading && !error && relations.length > 0 && (
+      {!loading && !error && employees.length > 0 && (
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
-                <th style={thStyle}>{t('employee.colEmail')}</th>
                 <th style={thStyle}>{t('employee.colFirstName')}</th>
                 <th style={thStyle}>{t('employee.colLastName')}</th>
-                <th style={thStyle}>{t('employee.colRole')}</th>
+                <th style={thStyle}>{t('employee.colEmail')}</th>
+                <th style={thStyle}>{t('employee.employmentStatus')}</th>
               </tr>
             </thead>
             <tbody>
-              {relations.map((relation) => (
+              {employees.map((employee) => (
                 <tr
-                  key={relation.reference}
-                  onClick={() => navigation.navigate('EmployeeViewer', relation)}
+                  key={employee.id}
+                  onClick={() => navigation.navigate('EmployeeViewer', employee)}
                   style={{ cursor: 'pointer' }}
                   onMouseEnter={e => (e.currentTarget.style.backgroundColor = colors.background)}
                   onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
                 >
-                  <td style={tdStyle}>{relation.user.email}</td>
-                  <td style={tdStyle}>{relation.user.firstName}</td>
-                  <td style={tdStyle}>{relation.user.lastName}</td>
-                  <td style={tdStyle}>{relation.user.role}</td>
+                  <td style={tdStyle}>{employee.firstName}</td>
+                  <td style={tdStyle}>{employee.lastName}</td>
+                  <td style={tdStyle}>{employee.email ?? '—'}</td>
+                  <td style={tdStyle}>{t(`employee.status_${employee.employmentStatus}`)}</td>
                 </tr>
               ))}
             </tbody>

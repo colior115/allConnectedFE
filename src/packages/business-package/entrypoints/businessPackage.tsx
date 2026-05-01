@@ -70,7 +70,7 @@ export const BusinessPackage: EntryPoint[] = [
     extend(shell) {
       const screensAPI = shell.getAPI(ScreensInfraAPI);
       const authFlowsAPI = shell.getAPI(AuthFlowsAPI);
-      const businessDataAPI = shell.getAPI(BusinessDataServiceAPI);
+      const businessDataServiceAPI = shell.getAPI(BusinessDataServiceAPI);
       const businessContextAPI = shell.getAPI(BusinessContextInfraAPI);
       const employeeUIAPI = shell.getAPI(EmployeeUIAPI);
       const { BaseScreen } = screensAPI.components;
@@ -90,10 +90,10 @@ export const BusinessPackage: EntryPoint[] = [
           <BaseScreen titleKey="businessPicker.title" goToPrevDisabled={true}>
             <BusinessPickerScreen
               navigation={navigation}
-              getUserBusinesses={businessDataAPI.getUserBusinesses}
-              onSelectBusiness={async (business, role, type) => {
-                const token = await businessDataAPI.connectToBusiness(business.id);
-                businessContextAPI.setBusinessContext({ businessId: business.id, name: business.name, role, type, token });
+              getUserBusinesses={businessDataServiceAPI.getUserBusinesses}
+              onSelectBusiness={async (business, role) => {
+                const token = await businessDataServiceAPI.connectToBusiness(business.id);
+                businessContextAPI.setBusinessContext({ businessId: business.id, name: business.name, role, token });
               }}
             />
           </BaseScreen>

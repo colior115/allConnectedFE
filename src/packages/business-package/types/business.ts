@@ -9,12 +9,29 @@ export interface BusinessPublic {
   name: string;
 }
 
-export type UserRole = 'admin' | 'user';
+export type AppArea = 'employees' | 'accounts' | 'customers';
+export type PermissionLevel = 'EDIT' | 'VIEW' | 'NONE';
+export type Permissions = { [K in AppArea]: PermissionLevel };
 
-export type UserBusinessRelationType = 'employee' | 'client';
+export interface UserRole {
+  id: string;
+  businessId: string;
+  roleName: string;
+  permissions: Permissions;
+}
 
-export interface UserBusinessRelation {
+export interface BusinessRelation {
+  id: string;
+  userId: string;
   business: Business;
   role: UserRole;
-  type: UserBusinessRelationType;
+}
+
+export type UserRoleEnriched = Omit<UserRole, 'businessId'>;
+
+export interface BusinessRelationEnriched {
+  id: string;
+  userId: string;
+  business: Business;
+  role: UserRoleEnriched;
 }

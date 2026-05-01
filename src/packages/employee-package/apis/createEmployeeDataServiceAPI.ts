@@ -5,63 +5,53 @@ import type { EmployeeDTO, CreateEmployeeInputDTO, UpdateEmployeeInputDTO } from
 
 const fromDTO = (dto: EmployeeDTO): Employee => ({
   id: dto.id,
-  salaryType: dto.salaryType,
-  salaryValue: dto.salaryValue,
-  currency: dto.currency,
+  businessId: dto.businessId,
+  firstName: dto.firstName,
+  lastName: dto.lastName,
+  gender: dto.gender,
+  hireDate: dto.hireDate,
+  employmentStatus: dto.employmentStatus,
+  employeeId: dto.employeeId,
+  email: dto.email,
+  phone: dto.phone,
+  terminationDate: dto.terminationDate,
 });
-
-const base = (businessId: string) =>
-  `/businessManager/employee/${encodeURIComponent(businessId)}`;
 
 export const createEmployeeDataServiceAPI = (): EmployeeDataServiceAPI => ({
   async getEmployees(businessId, params?: GetEmployeesParams): Promise<PaginatedEmployees> {
     const query = new URLSearchParams();
+    query.set('businessId', businessId);
     if (params?.page !== undefined) query.set('page', String(params.page));
     if (params?.limit !== undefined) query.set('limit', String(params.limit));
     if (params?.search) query.set('search', params.search);
-    const qs = query.size > 0 ? `?${query.toString()}` : '';
-    return apiRequest(
-      `/businessManager/employees/${encodeURIComponent(businessId)}${qs}`,
-      { method: 'GET' },
-    );
+    const result: { data: EmployeeDTO[]; total: number; page: number; limit: number } =
+      await apiRequest(`/employee?${query.toString()}`, { method: 'GET' });
+    return { ...result, data: result.data.map(fromDTO) };
   },
 
-  async getEmployeeById(employeeId) {
-    const dto: EmployeeDTO = await apiRequest(
-      `/employees/${encodeURIComponent(employeeId)}`,
-      { method: 'GET' },
-    );
-    return fromDTO(dto);
-  },
-  async getEmployee(businessId, userEmail) {
-    const dto: EmployeeDTO = await apiRequest(
-      `${base(businessId)}/${encodeURIComponent(userEmail)}`,
-      { method: 'GET' },
-    );
+  async getEmployeeById(id) {
+    const dto: EmployeeDTO = await apiRequest(`/employee/${encodeURIComponent(id)}`, { method: 'GET' });
     return fromDTO(dto);
   },
 
-  async createEmployee(businessId, userEmail, data: CreateEmployeeInputDTO) {
-    const dto: EmployeeDTO = await apiRequest(`${base(businessId)}/${encodeURIComponent(userEmail)}`, {
+  async createEmployee(data: CreateEmployeeInputDTO) {
+    const dto: EmployeeDTO = await apiRequest('/employee', {
       method: 'POST',
       body: JSON.stringify(data),
     });
     return fromDTO(dto);
   },
 
-  async updateEmployee(businessId, userEmail, data: UpdateEmployeeInputDTO) {
-    const dto: EmployeeDTO = await apiRequest(
-      `${base(businessId)}/${encodeURIComponent(userEmail)}`,
-      { method: 'PUT', body: JSON.stringify(data) },
-    );
+  async updateEmployee(id, data: UpdateEmployeeInputDTO) {
+    const dto: EmployeeDTO = await apiRequest(`/employee/${encodeURIComponent(id)}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
     return fromDTO(dto);
   },
 
-  async deleteEmployee(businessId, userEmail) {
-    const dto: EmployeeDTO = await apiRequest(
-      `${base(businessId)}/${encodeURIComponent(userEmail)}`,
-      { method: 'DELETE' },
-    );
+  async deleteEmployee(id) {
+    const dto: EmployeeDTO = await apiRequest(`/employee/${encodeURIComponent(id)}`, { method: 'DELETE' });
     return fromDTO(dto);
   },
 });

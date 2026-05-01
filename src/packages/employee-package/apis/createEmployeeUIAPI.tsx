@@ -21,7 +21,6 @@ export const createEmployeeUIAPI = (shell: Shell): EmployeeUIAPI => {
     <AddEmployeeForm
       {...props}
       canAddNewUser={canAddNewUser}
-      createUser={userDataAPI.createUser}
       createEmployee={employeeDataAPI.createEmployee}
     />
   );
