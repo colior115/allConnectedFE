@@ -1,7 +1,15 @@
 import { apiRequest } from '../../../services/apiClient';
+import type { CreateEmployeeInput, Employee, EmployeeListItem, UpdateEmployeeInput } from '../types/employee';
+import type { EmployeeDTO, EmployeeListItemDTO } from '../types/employeeDTO';
 import type { EmployeeDataServiceAPI, GetEmployeesParams, PaginatedEmployees } from './employeeDataServiceAPI';
-import type { Employee } from '../types/employee';
-import type { EmployeeDTO, CreateEmployeeInputDTO, UpdateEmployeeInputDTO } from '../types/employeeDTO';
+
+const fromListItemDTO = (dto: EmployeeListItemDTO): EmployeeListItem => ({
+  id: dto.id,
+  firstName: dto.firstName,
+  lastName: dto.lastName,
+  email: dto.email,
+  employmentStatus: dto.employmentStatus,
+});
 
 const fromDTO = (dto: EmployeeDTO): Employee => ({
   id: dto.id,
@@ -20,13 +28,13 @@ const fromDTO = (dto: EmployeeDTO): Employee => ({
 export const createEmployeeDataServiceAPI = (): EmployeeDataServiceAPI => ({
   async getEmployees(businessId, params?: GetEmployeesParams): Promise<PaginatedEmployees> {
     const query = new URLSearchParams();
-    query.set('businessId', businessId);
     if (params?.page !== undefined) query.set('page', String(params.page));
     if (params?.limit !== undefined) query.set('limit', String(params.limit));
     if (params?.search) query.set('search', params.search);
-    const result: { data: EmployeeDTO[]; total: number; page: number; limit: number } =
-      await apiRequest(`/employee?${query.toString()}`, { method: 'GET' });
-    return { ...result, data: result.data.map(fromDTO) };
+    const qs = query.toString();
+    const result: { data: EmployeeListItemDTO[]; total: number; page: number; limit: number } =
+      await apiRequest(`/employee/${encodeURIComponent(businessId)}/all${qs ? `?${qs}` : ''}`, { method: 'GET' });
+    return { ...result, data: result.data.map(fromListItemDTO) };
   },
 
   async getEmployeeById(id) {
@@ -34,7 +42,7 @@ export const createEmployeeDataServiceAPI = (): EmployeeDataServiceAPI => ({
     return fromDTO(dto);
   },
 
-  async createEmployee(data: CreateEmployeeInputDTO) {
+  async createEmployee(data: CreateEmployeeInput) {
     const dto: EmployeeDTO = await apiRequest('/employee', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -42,7 +50,7 @@ export const createEmployeeDataServiceAPI = (): EmployeeDataServiceAPI => ({
     return fromDTO(dto);
   },
 
-  async updateEmployee(id, data: UpdateEmployeeInputDTO) {
+  async updateEmployee(id, data: UpdateEmployeeInput) {
     const dto: EmployeeDTO = await apiRequest(`/employee/${encodeURIComponent(id)}`, {
       method: 'PUT',
       body: JSON.stringify(data),

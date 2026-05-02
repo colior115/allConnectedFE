@@ -7,7 +7,7 @@ import { typography } from '../../../styles/theme/typography';
 import { useBusinessContext } from '../../business-package';
 import type { ScreenWithNavigationProps } from '../../screens-package';
 import type { EmployeeDataServiceAPI } from '../apis/employeeDataServiceAPI';
-import type { Employee } from '../types/employee';
+import type { EmployeeListItem } from '../types/employee';
 
 const PAGE_LIMIT = 20;
 
@@ -37,7 +37,7 @@ const tdStyle: CSSProperties = {
 export function EmployeesListScreen({ navigation, getEmployees }: Props) {
   const { t } = useTranslation();
   const businessContext = useBusinessContext();
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [employees, setEmployees] = useState<EmployeeListItem[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

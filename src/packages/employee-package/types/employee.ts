@@ -1,3 +1,14 @@
+export type Gender = "male" | "female" | "other" | "prefer_not_to_say";
+export type EmploymentStatus = "active" | "inactive" | "terminated" | "on_leave";
+
+export interface EmployeeListItem {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  employmentStatus: EmploymentStatus;
+}
+
 export interface Employee {
   id: string;
   businessId: string;
@@ -15,6 +26,3 @@ export interface Employee {
 export type CreateEmployeeInput = Omit<Employee, 'id'>;
 
 export type UpdateEmployeeInput = Partial<CreateEmployeeInput>;
-
-export type Gender = "male" | "female" | "other" | "prefer_not_to_say";
-export type EmploymentStatus = "active" | "inactive" | "terminated" | "on_leave";

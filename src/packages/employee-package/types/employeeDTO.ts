@@ -1,5 +1,13 @@
 import type { EmploymentStatus, Gender } from "./employee";
 
+export interface EmployeeListItemDTO {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  employmentStatus: EmploymentStatus;
+}
+
 export interface EmployeeDTO {
   id: string;
   businessId: string;
