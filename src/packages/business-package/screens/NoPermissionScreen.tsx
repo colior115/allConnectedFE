@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Text } from '../../../components';
-import type { ScreenWithNavigationProps } from '../../screens-package';
 
-export function NoPermissionScreen(_: ScreenWithNavigationProps) {
+export function NoPermissionScreen() {
   const { t } = useTranslation();
 
   return (

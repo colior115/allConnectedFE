@@ -22,7 +22,10 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "@colior115/all-connected-be-sdk": ["./src/types/all-connected-be-sdk.d.ts"]
+    }
   },
   "include": ["src"]
 }

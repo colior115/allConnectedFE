@@ -4,6 +4,12 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
+import sdkDependencyLayer from './eslint-rules/sdk-dependency-layer.js'
+
+const localRules = {
+  plugins: { local: { rules: { 'sdk-dependency-layer': sdkDependencyLayer } } },
+  rules: { 'local/sdk-dependency-layer': 'error' },
+}
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -19,5 +25,9 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+  },
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    ...localRules,
   },
 ])

@@ -1,11 +1,11 @@
 import type { EntryPoint } from 'repluggable';
-import { UserDataServiceAPI } from '../../user-package';
-import { ScreensInfraAPI } from '../../screens-package';
 import EmployeesIcon from '../../../assets/images/icons/employees.svg?react';
-import { EmployeeDataServiceAPI } from '../apis/employeeDataServiceAPI';
+import { ScreensInfraAPI } from '../../screens-package';
+import { UserDataServiceAPI } from '../../user-package';
 import { createEmployeeDataServiceAPI } from '../apis/createEmployeeDataServiceAPI';
-import { EmployeeUIAPI } from '../apis/employeeUIAPI';
 import { createEmployeeUIAPI } from '../apis/createEmployeeUIAPI';
+import { EmployeeDataServiceAPI } from '../apis/employeeDataServiceAPI';
+import { EmployeeUIAPI } from '../apis/employeeUIAPI';
 import { EmployeesListScreen } from '../screens/EmployeesListScreen';
 import { EmployeeViewerScreen } from '../screens/EmployeeViewerScreen';
 

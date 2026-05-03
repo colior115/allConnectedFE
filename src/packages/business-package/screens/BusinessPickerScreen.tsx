@@ -32,6 +32,7 @@ export function BusinessPickerScreen({ navigation, getUserBusinesses, onSelectBu
         setError(t('businessPicker.error'));
         setLoading(false);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSelect = async (business: Business, role: UserRoleEnriched) => {

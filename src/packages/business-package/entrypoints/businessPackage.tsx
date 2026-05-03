@@ -126,7 +126,7 @@ export const BusinessPackage: EntryPoint[] = [
         protected: false,
         screen: ({ navigation }) => (
           <BaseScreen navigation={navigation} titleKey="noPermission.title">
-            <NoPermissionScreen navigation={navigation} />
+            <NoPermissionScreen />
           </BaseScreen>
         ),
       });

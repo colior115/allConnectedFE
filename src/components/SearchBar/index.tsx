@@ -2,7 +2,7 @@ import { useState, type CSSProperties, type InputHTMLAttributes } from 'react';
 import { colors } from '../../styles/theme/colors';
 import { typography } from '../../styles/theme/typography';
 
-interface SearchBarProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'style' | 'type'> {}
+type SearchBarProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'style' | 'type'>;
 
 export default function SearchBar(props: SearchBarProps) {
   const [focused, setFocused] = useState(false);

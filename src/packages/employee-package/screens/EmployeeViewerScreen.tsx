@@ -34,7 +34,7 @@ export function EmployeeViewerScreen({ navigation, getEmployeeById }: Props) {
       .then(setEmployee)
       .catch(() => setError(t('employee.errorDetails')))
       .finally(() => setLoading(false));
-  }, [preview?.id]);
+  }, [preview?.id, getEmployeeById, t]);
 
   if (!preview) return null;
 

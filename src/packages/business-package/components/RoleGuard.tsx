@@ -16,7 +16,7 @@ export function RoleGuard({ role, navigation, children }: Props) {
     if (ctx !== null && ctx.role !== role) {
       navigation.navigate('NoPermission');
     }
-  }, [ctx?.role, role, navigation]);
+  }, [ctx, role, navigation]);
 
   if (!ctx || ctx.role !== role) return null;
 

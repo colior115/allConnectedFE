@@ -42,5 +42,6 @@ export function MainScreenWithNavigation({ getInitialScreen, getScreens, getScre
   const isProtected = currentScreen.protected !== false;
   const Guard = isProtected ? (getScreenGuard() ?? PassThrough) : PassThrough;
 
+  // eslint-disable-next-line react-hooks/static-components
   return <Guard navigate={navigate}>{currentScreen.screen({ navigation })}</Guard>;
 }

@@ -156,6 +156,16 @@
   resolved "https://registry.yarnpkg.com/@bufbuild/protobuf/-/protobuf-2.11.0.tgz#3ec3985c9074b23aea337957225fe15a0e845f8e"
   integrity sha512-sBXGT13cpmPR5BMgHE6UEEfEaShh5Ror6rfN3yEK5si7QVrtZg8LEPQb0VVhiLRUslD2yLnXtnRzG035J/mZXQ==
 
+"@colior115/all-connected-be-sdk@^1.0.0":
+  version "1.0.1"
+  resolved "https://npm.pkg.github.com/download/@colior115/all-connected-be-sdk/1.0.1/0c5dc101fec4ac102405afcdfca1204ebded24d8#0c5dc101fec4ac102405afcdfca1204ebded24d8"
+  integrity sha512-YwwQMqySZHJjD0aYR3jDaiy0ea3MnyB1H+4GfbcvwjKrBDcxEZG4rLX9hDw8ZPI0klqOA0eEpVQmyaeMjaYD7Q==
+
+"@colior115/sdk@^1.0.0":
+  version "1.0.0"
+  resolved "https://npm.pkg.github.com/download/@colior115/sdk/1.0.0/bc8b0742d9c6197cc2599f82d901340f32cc19d9#bc8b0742d9c6197cc2599f82d901340f32cc19d9"
+  integrity sha512-yzfawtB88Bke8ksyWgT375wGfTGb1yrnV9OOrUjwsTUC/uzu+oJh8yIS+UMcTE29JLUBNSUMziFM9g14OMnoLw==
+
 "@emnapi/core@^1.7.1":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@emnapi/core/-/core-1.9.0.tgz#4a54213b208fcf288cce25076c74e0f7613e6100"

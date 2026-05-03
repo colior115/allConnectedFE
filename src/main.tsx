@@ -9,6 +9,7 @@ import { BusinessPackage } from './packages/business-package'
 import { UserPackage } from './packages/user-package'
 import { EmployeePackage } from './packages/employee-package'
 import { DebugPackage } from './packages/debug-package'
+import { CommonServicesPackage } from './common-services'
 
 const host = createAppHost([
   ...mainViewPackage,
@@ -17,6 +18,7 @@ const host = createAppHost([
   ...AuthPackage,
   ...UserPackage,
   ...BusinessPackage,
+  ...CommonServicesPackage,
   ...EmployeePackage,
   ...DebugPackage,
 ],

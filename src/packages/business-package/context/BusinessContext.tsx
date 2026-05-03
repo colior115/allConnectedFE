@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { registerBusinessTokenGetter } from '../../../services/apiClient';
 import type { BusinessContextInfraAPI, BusinessContextValue } from '../apis/businessContextInfraAPI';
 
@@ -12,12 +12,9 @@ interface BusinessProviderProps {
 export function BusinessProvider({ children, businessContextAPI }: BusinessProviderProps) {
   const [context, setContext] = useState<BusinessContextValue | null>(null);
 
-  const tokenRef = useRef<string | null>(null);
-  tokenRef.current = context?.token ?? null;
-
   useEffect(() => {
     businessContextAPI.registerSetter(setContext);
-    registerBusinessTokenGetter(() => tokenRef.current);
+    registerBusinessTokenGetter(() => businessContextAPI.getContext()?.token ?? null);
   }, [businessContextAPI]);
 
   return (
@@ -27,6 +24,7 @@ export function BusinessProvider({ children, businessContextAPI }: BusinessProvi
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useBusinessContext(): BusinessContextValue | null {
   return useContext(BusinessContext);
 }

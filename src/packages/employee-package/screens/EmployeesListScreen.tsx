@@ -46,13 +46,14 @@ export function EmployeesListScreen({ navigation, getEmployees }: Props) {
 
   useEffect(() => {
     if (!businessContext?.businessId) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setError(null);
     getEmployees(businessContext.businessId, { page, limit: PAGE_LIMIT, search: search || undefined })
       .then(({ data, total: tot }) => { setEmployees(data || []); setTotal(tot || 0); })
       .catch(() => setError(t('employee.errorList')))
       .finally(() => setLoading(false));
-  }, [businessContext?.businessId, page, search]);
+  }, [businessContext?.businessId, page, search, getEmployees, t]);
 
   const handleSearch = (value: string) => {
     setSearch(value);

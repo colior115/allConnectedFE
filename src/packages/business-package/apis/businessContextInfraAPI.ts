@@ -18,4 +18,5 @@ export interface BusinessContextInfraAPI {
   setBusinessContext(context: BusinessContextValue): void;
   clearBusinessContext(): void;
   registerSetter(setter: (context: BusinessContextValue | null) => void): void;
+  getContext(): BusinessContextValue | null;
 }
