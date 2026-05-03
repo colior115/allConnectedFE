@@ -1,3 +1,4 @@
+import type { Shell } from 'repluggable';
 import i18n from '../../../i18n/i18n';
 import type { I18nInfraAPI } from './i18nInfraAPI';
 
@@ -9,7 +10,7 @@ const applyDir = (lang: string) => {
 
 applyDir(i18n.language);
 
-export const createI18nInfraAPI = (): I18nInfraAPI => ({
+export const createI18nInfraAPI = (_shell: Shell): I18nInfraAPI => ({
   async changeLanguage(lang) {
     await i18n.changeLanguage(lang);
     applyDir(lang);

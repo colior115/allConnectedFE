@@ -8,9 +8,9 @@ export const createEmployeeUIAPI = (shell: Shell): EmployeeUIAPI => {
   const employeeDataAPI = shell.getAPI(EmployeeDataServiceAPI);
   const userDataAPI = shell.getAPI(UserDataServiceAPI);
 
-  const canAddNewUser = async (email: string): Promise<boolean> => {
+  const canAddNewUser = async (id: string): Promise<boolean> => {
     try {
-      await userDataAPI.getUserByEmail(email);
+      await userDataAPI.getUser(id);
       return false;
     } catch {
       return true;

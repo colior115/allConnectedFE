@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, Label, Text } from '../../../components';
 import { colors } from '../../../styles/theme/colors';
-import type { User } from '../types/user';
-import type { UserDTO } from '../types/userDTO';
+import type { CreateUserInput, User } from '../types/user';
 
 export interface AddUserFormProps {
   canAddNewUser: (email: string) => Promise<boolean>;
@@ -12,7 +11,7 @@ export interface AddUserFormProps {
 }
 
 interface AddUserFormInternalProps extends AddUserFormProps {
-  createUser: (data: UserDTO) => Promise<User>;
+  createUser: (data: CreateUserInput) => Promise<User>;
 }
 
 export function AddUserForm({ canAddNewUser, createUser, onSuccess, onCancel }: AddUserFormInternalProps) {
@@ -33,7 +32,7 @@ export function AddUserForm({ canAddNewUser, createUser, onSuccess, onCancel }: 
         setError(t('user.emailAlreadyExists'));
         return;
       }
-      const user = await createUser({ email, firstName, lastName });
+      const user = await createUser({ email, firstName, lastName, role: 'user' });
       onSuccess?.(user);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('auth.unknownError'));

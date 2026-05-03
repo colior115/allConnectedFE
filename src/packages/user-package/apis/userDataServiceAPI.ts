@@ -1,5 +1,5 @@
 import type { SlotKey } from 'repluggable';
-import type { UpdateUserInput, User } from '../types/user';
+import type { CreateUserInput, UpdateUserInput, User } from '../types/user';
 
 export const UserDataServiceAPI: SlotKey<UserDataServiceAPI> = {
   name: 'User Data Service API',
@@ -8,8 +8,9 @@ export const UserDataServiceAPI: SlotKey<UserDataServiceAPI> = {
 };
 
 export interface UserDataServiceAPI {
+  getUser(id: string): Promise<User|undefined>;
   getUserByEmail(email: string): Promise<User|undefined>;
-  createUser(data: User): Promise<User>;
-  updateUser(email: string, data: UpdateUserInput): Promise<User>;
-  deleteUser(email: string): Promise<User>;
+  createUser(data: CreateUserInput): Promise<User>;
+  updateUser(id: string, data: UpdateUserInput): Promise<User>;
+  deleteUser(id: string): Promise<User>;
 }

@@ -1,5 +1,5 @@
-export type Gender = "male" | "female" | "other" | "prefer_not_to_say";
-export type EmploymentStatus = "active" | "inactive" | "terminated" | "on_leave";
+export type Gender = "male" | "female" | "other";
+export type EmploymentStatus = "active" | "terminated" | "on_leave";
 
 export interface EmployeeListItem {
   id: string;
@@ -26,3 +26,10 @@ export interface Employee {
 export type CreateEmployeeInput = Omit<Employee, 'id'>;
 
 export type UpdateEmployeeInput = Partial<CreateEmployeeInput>;
+
+export type PaginatedEmployees = {
+  data: EmployeeListItem[];
+  total: number;
+  page: number;
+  limit: number;
+};

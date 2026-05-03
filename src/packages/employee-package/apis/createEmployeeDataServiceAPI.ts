@@ -1,7 +1,8 @@
-import { apiRequest } from '../../../services/apiClient';
-import type { CreateEmployeeInput, Employee, EmployeeListItem, UpdateEmployeeInput } from '../types/employee';
-import type { EmployeeDTO, EmployeeListItemDTO } from '../types/employeeDTO';
+import type { Shell } from 'repluggable';
+import type { EmployeeDTO, EmployeeListItemDTO, EmployeeListResponseDTO } from '@colior115/all-connected-be-sdk';
+import type { Employee, EmployeeListItem } from '../types/employee';
 import type { EmployeeDataServiceAPI, GetEmployeesParams, PaginatedEmployees } from './employeeDataServiceAPI';
+import { AllConnectedServerSdkAPI } from '../../../common-services';
 
 const fromListItemDTO = (dto: EmployeeListItemDTO): EmployeeListItem => ({
   id: dto.id,
@@ -25,41 +26,34 @@ const fromDTO = (dto: EmployeeDTO): Employee => ({
   terminationDate: dto.terminationDate,
 });
 
-export const createEmployeeDataServiceAPI = (): EmployeeDataServiceAPI => ({
-  async getEmployees(businessId, params?: GetEmployeesParams): Promise<PaginatedEmployees> {
-    const query = new URLSearchParams();
-    if (params?.page !== undefined) query.set('page', String(params.page));
-    if (params?.limit !== undefined) query.set('limit', String(params.limit));
-    if (params?.search) query.set('search', params.search);
-    const qs = query.toString();
-    const result: { data: EmployeeListItemDTO[]; total: number; page: number; limit: number } =
-      await apiRequest(`/employee/${encodeURIComponent(businessId)}/all${qs ? `?${qs}` : ''}`, { method: 'GET' });
-    return { ...result, data: result.data.map(fromListItemDTO) };
-  },
-
-  async getEmployeeById(id) {
-    const dto: EmployeeDTO = await apiRequest(`/employee/${encodeURIComponent(id)}`, { method: 'GET' });
-    return fromDTO(dto);
-  },
-
-  async createEmployee(data: CreateEmployeeInput) {
-    const dto: EmployeeDTO = await apiRequest('/employee', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-    return fromDTO(dto);
-  },
-
-  async updateEmployee(id, data: UpdateEmployeeInput) {
-    const dto: EmployeeDTO = await apiRequest(`/employee/${encodeURIComponent(id)}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
-    return fromDTO(dto);
-  },
-
-  async deleteEmployee(id) {
-    const dto: EmployeeDTO = await apiRequest(`/employee/${encodeURIComponent(id)}`, { method: 'DELETE' });
-    return fromDTO(dto);
-  },
+const fromListResponseDTO = (dto: EmployeeListResponseDTO): PaginatedEmployees => ({
+  data: dto.data.map(fromListItemDTO),
+  total: dto.total,
+  page: dto.page,
+  limit: dto.limit,
 });
+
+export const createEmployeeDataServiceAPI = (shell: Shell): EmployeeDataServiceAPI => {
+  const sdk = shell.getAPI(AllConnectedServerSdkAPI);
+  return {
+    async getEmployees(businessId: string, params?: GetEmployeesParams): Promise<PaginatedEmployees> {
+      return fromListResponseDTO(await sdk.employee.getAll(businessId, params));
+    },
+
+    async getEmployeeById(id: string) {
+      return fromDTO(await sdk.employee.get(id));
+    },
+
+    async createEmployee(data) {
+      return fromDTO(await sdk.employee.create(data));
+    },
+
+    async updateEmployee(id, data) {
+      return fromDTO(await sdk.employee.update(id, data));
+    },
+
+    async deleteEmployee(id) {
+      return fromDTO(await sdk.employee.delete(id));
+    },
+  };
+};

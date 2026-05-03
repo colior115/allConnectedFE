@@ -19,7 +19,7 @@ export const I18nPackage: EntryPoint[] = [
     },
 
     attach(shell) {
-      shell.contributeAPI(I18nInfraAPI, () => createI18nInfraAPI());
+      shell.contributeAPI(I18nInfraAPI, () => createI18nInfraAPI(shell));
     },
 
     extend(shell) {

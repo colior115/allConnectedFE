@@ -16,107 +16,74 @@ export type Permissions = { [K in AppArea]: PermissionLevel };
 export type EmploymentStatus = 'active' | 'terminated' | 'on_leave';
 export type Gender = 'male' | 'female' | 'other';
 
-export type User = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: UserSystemRole;
-};
-export type CreateUserInput = Omit<User, 'id'>;
-export type UpdateUserInput = Partial<CreateUserInput>;
+export type UserDTO = { id: string; firstName: string; lastName: string; email: string; role: UserSystemRole };
+export type CreateUserInputDTO = Omit<UserDTO, 'id'>;
+export type UpdateUserInputDTO = Partial<CreateUserInputDTO>;
 
-export type Business = { id: string; name: string; businessId: string };
-export type BusinessPublicDetails = Pick<Business, 'id' | 'name'>;
-export type CreateBusinessInput = Omit<Business, 'id'>;
-export type UpdateBusinessInput = Partial<CreateBusinessInput>;
+export type BusinessDTO = { id: string; name: string; businessId: string };
+export type BusinessPublicDetailsDTO = Pick<BusinessDTO, 'id' | 'name'>;
+export type CreateBusinessInputDTO = Omit<BusinessDTO, 'id'>;
+export type UpdateBusinessInputDTO = Partial<CreateBusinessInputDTO>;
 
-export type Employee = {
-  id: string;
-  businessId: string;
-  firstName: string;
-  lastName: string;
-  gender: Gender;
-  hireDate: string;
-  employmentStatus: EmploymentStatus;
-  employeeId: string;
-  email?: string;
-  phone?: string;
-  terminationDate?: string;
+export type EmployeeDTO = {
+  id: string; businessId: string; firstName: string; lastName: string;
+  gender: Gender; hireDate: string; employmentStatus: EmploymentStatus;
+  employeeId: string; email?: string; phone?: string; terminationDate?: string;
 };
-export type EmployeeListItem = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email?: string;
-  employmentStatus: EmploymentStatus;
-};
-export type EmployeeListResponse = {
-  data: EmployeeListItem[];
-  total: number;
-  page: number;
-  limit: number;
-};
-export type CreateEmployeeInput = Omit<Employee, 'id'>;
-export type UpdateEmployeeInput = Partial<CreateEmployeeInput>;
+export type EmployeeListItemDTO = { id: string; firstName: string; lastName: string; email?: string; employmentStatus: EmploymentStatus };
+export type EmployeeListResponseDTO = { data: EmployeeListItemDTO[]; total: number; page: number; limit: number };
+export type CreateEmployeeInputDTO = Omit<EmployeeDTO, 'id'>;
+export type UpdateEmployeeInputDTO = Partial<CreateEmployeeInputDTO>;
+
+export type UserRoleDTO = { id: string; businessId: string; roleName: string; permissions: Permissions };
+export type CreateUserRoleInputDTO = Omit<UserRoleDTO, 'id'>;
+export type UpdateUserRoleInputDTO = Partial<Omit<UserRoleDTO, 'id'>>;
+
+export type BusinessRelationDTO = { id: string; userId: string; businessId: string; roleId: string };
+export type CreateBusinessRelationInputDTO = Omit<BusinessRelationDTO, 'id'>;
+export type UpdateBusinessRelationInputDTO = { roleId?: string };
+export type BusinessRelationEnrichedDTO = { id: string; userId: string; business: BusinessDTO; role: UserRoleDTO };
+
 export type GetAllEmployeesParams = { page?: number; limit?: number; search?: string };
-
-export type UserRole = {
-  id: string;
-  businessId: string;
-  roleName: string;
-  permissions: Permissions;
-};
-export type CreateUserRoleInput = Omit<UserRole, 'id'>;
-export type UpdateUserRoleInput = Partial<Omit<UserRole, 'id'>>;
-
-export type BusinessRelation = { id: string; userId: string; businessId: string; roleId: string };
-export type CreateBusinessRelationInput = Omit<BusinessRelation, 'id'>;
-export type UpdateBusinessRelationInput = { roleId: string };
-export type BusinessRelationView = {
-  id: string;
-  userId: string;
-  business: Business;
-  role: UserRole;
-};
 
 export declare function createSdk(config: SdkConfig): {
   user: {
-    get(id: string): Promise<User>;
-    create(input: CreateUserInput): Promise<User>;
-    update(id: string, input: UpdateUserInput): Promise<User>;
-    delete(id: string): Promise<User>;
-    setRole(id: string, role: UserSystemRole): Promise<User>;
+    get(id: string): Promise<UserDTO>;
+    getByEmail(email: string): Promise<UserDTO>;
+    create(input: CreateUserInputDTO): Promise<UserDTO>;
+    update(id: string, input: UpdateUserInputDTO): Promise<UserDTO>;
+    delete(id: string): Promise<UserDTO>;
+    setRole(id: string, role: UserSystemRole): Promise<UserDTO>;
   };
   business: {
-    getPublicDetails(id: string): Promise<BusinessPublicDetails>;
-    getAll(): Promise<Business[]>;
-    get(id: string): Promise<Business>;
-    create(input: CreateBusinessInput): Promise<Business>;
-    update(id: string, input: UpdateBusinessInput): Promise<Business>;
-    delete(id: string): Promise<Business>;
+    getPublicDetails(id: string): Promise<BusinessPublicDetailsDTO>;
+    getAll(): Promise<BusinessDTO[]>;
+    get(id: string): Promise<BusinessDTO>;
+    create(input: CreateBusinessInputDTO): Promise<BusinessDTO>;
+    update(id: string, input: UpdateBusinessInputDTO): Promise<BusinessDTO>;
+    delete(id: string): Promise<BusinessDTO>;
   };
   employee: {
-    getAll(businessId: string, params?: GetAllEmployeesParams): Promise<EmployeeListResponse>;
-    get(employeeId: string): Promise<Employee>;
-    create(input: CreateEmployeeInput): Promise<Employee>;
-    update(employeeId: string, input: UpdateEmployeeInput): Promise<Employee>;
-    delete(employeeId: string): Promise<Employee>;
+    getAll(businessId: string, params?: GetAllEmployeesParams): Promise<EmployeeListResponseDTO>;
+    get(employeeId: string): Promise<EmployeeDTO>;
+    create(input: CreateEmployeeInputDTO): Promise<EmployeeDTO>;
+    update(employeeId: string, input: UpdateEmployeeInputDTO): Promise<EmployeeDTO>;
+    delete(employeeId: string): Promise<EmployeeDTO>;
   };
   businessRelation: {
-    getAll(businessId: string): Promise<BusinessRelation[]>;
-    get(id: string): Promise<BusinessRelation>;
-    create(input: CreateBusinessRelationInput): Promise<BusinessRelation>;
-    update(id: string, input: UpdateBusinessRelationInput): Promise<BusinessRelation>;
-    delete(id: string): Promise<BusinessRelation>;
+    getAll(businessId: string): Promise<BusinessRelationDTO[]>;
+    get(id: string): Promise<BusinessRelationDTO>;
+    create(input: CreateBusinessRelationInputDTO): Promise<BusinessRelationDTO>;
+    update(id: string, input: UpdateBusinessRelationInputDTO): Promise<BusinessRelationDTO>;
+    delete(id: string): Promise<BusinessRelationDTO>;
     connect(businessId: string): Promise<{ token: string }>;
-    getUserBusinesses(): Promise<BusinessRelationView[]>;
+    getUserBusinesses(): Promise<BusinessRelationEnrichedDTO[]>;
   };
   userRole: {
-    getAll(businessId: string): Promise<UserRole[]>;
-    get(id: string): Promise<UserRole>;
-    create(input: CreateUserRoleInput): Promise<UserRole>;
-    update(id: string, input: UpdateUserRoleInput): Promise<UserRole>;
-    delete(id: string): Promise<UserRole>;
+    getAll(businessId: string): Promise<UserRoleDTO[]>;
+    get(id: string): Promise<UserRoleDTO>;
+    create(input: CreateUserRoleInputDTO): Promise<UserRoleDTO>;
+    update(id: string, input: UpdateUserRoleInputDTO): Promise<UserRoleDTO>;
+    delete(id: string): Promise<UserRoleDTO>;
   };
 };

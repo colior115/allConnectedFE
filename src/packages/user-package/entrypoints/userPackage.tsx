@@ -6,6 +6,7 @@ import { createUserUIAPI } from '../apis/createUserUIAPI';
 import { UserDataServiceAPI } from '../apis/userDataServiceAPI';
 import { UserUIAPI } from '../apis/userUIAPI';
 import { LoginScreen } from '../screens/LoginScreen';
+import { AllConnectedServerSdkAPI } from '../../../common-services';
 
 export const UserPackage: EntryPoint[] = [
   {
@@ -16,8 +17,12 @@ export const UserPackage: EntryPoint[] = [
       return [UserDataServiceAPI];
     },
 
+    getDependencyAPIs() {
+      return [AllConnectedServerSdkAPI];
+    },
+
     attach(shell) {
-      shell.contributeAPI(UserDataServiceAPI, () => createUserDataServiceAPI());
+      shell.contributeAPI(UserDataServiceAPI, () => createUserDataServiceAPI(shell));
     },
   },
 

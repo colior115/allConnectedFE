@@ -11,8 +11,7 @@
     "create-package": "node scripts/create-package.js"
   },
   "dependencies": {
-    "@colior115/all-connected-be-sdk": "^1.0.0",
-    "@colior115/sdk": "^1.0.0",
+    "@colior115/all-connected-be-sdk": "1.0.4",
     "@supabase/supabase-js": "^2.103.3",
     "i18next": "^25.8.18",
     "react": "^19.2.4",

@@ -1,19 +1,20 @@
 import type { EntryPoint } from 'repluggable';
+import Dashboard from '../../../assets/images/icons/dashboard.svg?react';
 import { AuthFlowsAPI } from '../../auth-package';
 import { EmployeeUIAPI } from '../../employee-package';
 import { MainViewInfraAPI } from '../../main-view-package';
 import { ScreensInfraAPI } from '../../screens-package';
-import Dashboard from '../../../assets/images/icons/dashboard.svg?react';
 import { BusinessContextInfraAPI } from '../apis/businessContextInfraAPI';
 import { BusinessDataServiceAPI } from '../apis/businessDataServiceAPI';
 import { createBusinessContextInfraAPI } from '../apis/createBusinessContextInfraAPI';
 import { createBusinessDataServiceAPI } from '../apis/createBusinessDataServiceAPI';
-import { BusinessProvider } from '../context/BusinessContext';
 import { BusinessSidebarHeader } from '../components/BusinessSidebarHeader';
+import { BusinessProvider } from '../context/BusinessContext';
 import { AddEmployeeScreen } from '../screens/AddEmployeeScreen';
 import { BusinessPickerScreen } from '../screens/BusinessPickerScreen';
 import { DashboardScreen } from '../screens/DashboardScreen';
 import { NoPermissionScreen } from '../screens/NoPermissionScreen';
+import { AllConnectedServerSdkAPI } from '../../../common-services';
 
 export const BusinessPackage: EntryPoint[] = [
   {
@@ -54,8 +55,12 @@ export const BusinessPackage: EntryPoint[] = [
       return [BusinessDataServiceAPI];
     },
 
+    getDependencyAPIs() {
+      return [AllConnectedServerSdkAPI];
+    },
+
     attach(shell) {
-      shell.contributeAPI(BusinessDataServiceAPI, () => createBusinessDataServiceAPI());
+      shell.contributeAPI(BusinessDataServiceAPI, () => createBusinessDataServiceAPI(shell));
     },
   },
 

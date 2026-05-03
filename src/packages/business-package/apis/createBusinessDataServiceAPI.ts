@@ -1,7 +1,8 @@
-import { apiRequest } from '../../../services/apiClient';
-import type { Business, BusinessPublic, BusinessRelationEnriched as BusinessRelationEnriched } from '../types/business';
-import type { BusinessDTO, BusinessPublicDetailsDTO, UserBusinessRelationEnrichedDTO as BusinessRelationEnrichedDTO } from '../types/businessDTO';
+import type { Shell } from 'repluggable';
+import type { BusinessDTO, BusinessPublicDetailsDTO, BusinessRelationEnrichedDTO } from '@colior115/all-connected-be-sdk';
+import type { Business, BusinessPublic, BusinessRelationEnriched } from '../types/business';
 import type { BusinessDataServiceAPI } from './businessDataServiceAPI';
+import { AllConnectedServerSdkAPI } from '../../../common-services';
 
 const fromDTO = (dto: BusinessDTO): Business => ({
   id: dto.id,
@@ -14,7 +15,7 @@ const fromPublicDTO = (dto: BusinessPublicDetailsDTO): BusinessPublic => ({
   name: dto.name,
 });
 
-const fromEnrichedRelationDTO = (dto: BusinessRelationEnrichedDTO): BusinessRelationEnriched => ({
+const fromEnrichedDTO = (dto: BusinessRelationEnrichedDTO): BusinessRelationEnriched => ({
   id: dto.id,
   userId: dto.userId,
   business: fromDTO(dto.business),
@@ -25,53 +26,40 @@ const fromEnrichedRelationDTO = (dto: BusinessRelationEnrichedDTO): BusinessRela
   },
 });
 
-export const createBusinessDataServiceAPI = (): BusinessDataServiceAPI => ({
-  async getPublicDetails(id) {
-    const dto: BusinessPublicDetailsDTO = await apiRequest(`/business/${id}/public`);
-    return fromPublicDTO(dto);
-  },
+export const createBusinessDataServiceAPI = (shell: Shell): BusinessDataServiceAPI => {
+  const sdk = shell.getAPI(AllConnectedServerSdkAPI);
+  return {
+    async getPublicDetails(id) {
+      return fromPublicDTO(await sdk.business.getPublicDetails(id));
+    },
 
-  async getAll() {
-    const dtos: BusinessDTO[] = await apiRequest('/business/all');
-    return dtos.map(fromDTO);
-  },
+    async getAll() {
+      return (await sdk.business.getAll()).map(fromDTO);
+    },
 
-  async getUserBusinesses() {
-    const dtos: BusinessRelationEnrichedDTO[] = await apiRequest('/businessRelation/user/businesses');
-    return dtos.map(fromEnrichedRelationDTO);
-  },
+    async getById(id) {
+      return fromDTO(await sdk.business.get(id));
+    },
 
-  async connectToBusiness(businessId) {
-    const { token } = await apiRequest('/businessRelation/connect', {
-      method: 'POST',
-      body: JSON.stringify({ businessId }),
-    });
-    return token as string;
-  },
+    async getUserBusinesses() {
+      return (await sdk.businessRelation.getUserBusinesses()).map(fromEnrichedDTO);
+    },
 
-  async getById(id) {
-    const dto: BusinessDTO = await apiRequest(`/business/${id}`);
-    return fromDTO(dto);
-  },
+    async connectToBusiness(businessId) {
+      const { token } = await sdk.businessRelation.connect(businessId);
+      return token;
+    },
 
-  async create(name, businessId) {
-    const dto: BusinessDTO = await apiRequest('/business', {
-      method: 'POST',
-      body: JSON.stringify({ name, businessId }),
-    });
-    return fromDTO(dto);
-  },
+    async create(name, businessId) {
+      return fromDTO(await sdk.business.create({ name, businessId }));
+    },
 
-  async update(id, name) {
-    const dto: BusinessDTO = await apiRequest(`/business/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ name }),
-    });
-    return fromDTO(dto);
-  },
+    async update(id, name) {
+      return fromDTO(await sdk.business.update(id, { name }));
+    },
 
-  async delete(id) {
-    const dto: BusinessDTO = await apiRequest(`/business/${id}`, { method: 'DELETE' });
-    return fromDTO(dto);
-  },
-});
+    async delete(id) {
+      return fromDTO(await sdk.business.delete(id));
+    },
+  };
+};

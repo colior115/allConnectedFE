@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, Label, Select, Text } from '../../../components';
 import { colors } from '../../../styles/theme/colors';
-import type { CreateEmployeeInput, Employee, EmploymentStatus, Gender } from '../types/employee';
+import type { CreateEmployeeInput, Employee, EmploymentStatus } from '../types/employee';
+import type { Gender } from '@colior115/all-connected-be-sdk';
 
 export interface AddEmployeeFormProps {
   businessId: string;
@@ -51,7 +52,7 @@ export function AddEmployeeForm({
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [employeeId, setEmployeeId] = useState('');
-  const [gender, setGender] = useState<Gender>('prefer_not_to_say');
+  const [gender, setGender] = useState<Gender>('male');
   const [hireDate, setHireDate] = useState('');
   const [employmentStatus, setEmploymentStatus] = useState<EmploymentStatus>('active');
   const [terminationDate, setTerminationDate] = useState('');

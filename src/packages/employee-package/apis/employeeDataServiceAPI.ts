@@ -1,5 +1,6 @@
 import type { SlotKey } from 'repluggable';
-import type { CreateEmployeeInput, Employee, EmployeeListItem, UpdateEmployeeInput } from '../types/employee';
+import type { CreateEmployeeInput, Employee, PaginatedEmployees, UpdateEmployeeInput } from '../types/employee';
+export type { PaginatedEmployees };
 
 export const EmployeeDataServiceAPI: SlotKey<EmployeeDataServiceAPI> = {
   name: 'Employee Data Service API',
@@ -13,12 +14,6 @@ export interface GetEmployeesParams {
   search?: string;
 }
 
-export interface PaginatedEmployees {
-  data: EmployeeListItem[];
-  total: number;
-  page: number;
-  limit: number;
-}
 
 export interface EmployeeDataServiceAPI {
   getEmployees(businessId: string, params?: GetEmployeesParams): Promise<PaginatedEmployees>;

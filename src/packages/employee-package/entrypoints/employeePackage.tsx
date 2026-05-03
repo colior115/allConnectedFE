@@ -8,6 +8,7 @@ import { EmployeeDataServiceAPI } from '../apis/employeeDataServiceAPI';
 import { EmployeeUIAPI } from '../apis/employeeUIAPI';
 import { EmployeesListScreen } from '../screens/EmployeesListScreen';
 import { EmployeeViewerScreen } from '../screens/EmployeeViewerScreen';
+import { AllConnectedServerSdkAPI } from '../../../common-services';
 
 export const EmployeePackage: EntryPoint[] = [
   {
@@ -18,8 +19,12 @@ export const EmployeePackage: EntryPoint[] = [
       return [EmployeeDataServiceAPI];
     },
 
+    getDependencyAPIs() {
+      return [AllConnectedServerSdkAPI];
+    },
+
     attach(shell) {
-      shell.contributeAPI(EmployeeDataServiceAPI, () => createEmployeeDataServiceAPI());
+      shell.contributeAPI(EmployeeDataServiceAPI, () => createEmployeeDataServiceAPI(shell));
     },
   },
 
