@@ -8,6 +8,7 @@ import { I18nPackage } from './packages/i18n-package'
 import { BusinessPackage } from './packages/business-package'
 import { UserPackage } from './packages/user-package'
 import { EmployeePackage } from './packages/employee-package'
+import { CustomerPackage } from './packages/customer-package'
 import { DebugPackage } from './packages/debug-package'
 import { CommonServicesPackage } from './common-services'
 
@@ -20,6 +21,7 @@ const host = createAppHost([
   ...BusinessPackage,
   ...CommonServicesPackage,
   ...EmployeePackage,
+  ...CustomerPackage,
   ...DebugPackage,
 ],
 {

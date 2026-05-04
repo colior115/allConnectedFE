@@ -46,6 +46,15 @@ export type BusinessRelationEnrichedDTO = { id: string; userId: string; business
 
 export type GetAllEmployeesParams = { page?: number; limit?: number; search?: string };
 
+export type CustomerDTO = {
+  id: string; businessId: string; name: string;
+  individual: boolean; address?: string; phone?: string; email?: string;
+};
+export type CustomerListResponseDTO = { data: CustomerDTO[]; total: number; page: number; limit: number };
+export type CreateCustomerInputDTO = Omit<CustomerDTO, 'id'>;
+export type UpdateCustomerInputDTO = Partial<Omit<CustomerDTO, 'id' | 'businessId'>>;
+export type GetAllCustomersParams = { page?: number; limit?: number; search?: string };
+
 export declare function createSdk(config: SdkConfig): {
   user: {
     get(id: string): Promise<UserDTO>;
@@ -85,5 +94,12 @@ export declare function createSdk(config: SdkConfig): {
     create(input: CreateUserRoleInputDTO): Promise<UserRoleDTO>;
     update(id: string, input: UpdateUserRoleInputDTO): Promise<UserRoleDTO>;
     delete(id: string): Promise<UserRoleDTO>;
+  };
+  customer: {
+    getAll(businessId: string, params?: GetAllCustomersParams): Promise<CustomerListResponseDTO>;
+    get(id: string): Promise<CustomerDTO>;
+    create(input: CreateCustomerInputDTO): Promise<CustomerDTO>;
+    update(id: string, input: UpdateCustomerInputDTO): Promise<CustomerDTO>;
+    delete(id: string): Promise<CustomerDTO>;
   };
 };

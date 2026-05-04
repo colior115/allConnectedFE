@@ -1,19 +1,19 @@
 import type { ScreenWithNavigationProps } from '../../screens-package';
-import type { AddEmployeeFormComponent } from '../../employee-package';
-import { useBusinessContext } from '../context/BusinessContext';
+import type { AddCustomerFormComponent } from '../apis/customerUIAPI';
+import { useBusinessContext } from '../../business-package';
 
 interface Props extends ScreenWithNavigationProps {
-  AddEmployeeForm: AddEmployeeFormComponent;
+  AddCustomerForm: AddCustomerFormComponent;
 }
 
-export function AddEmployeeScreen({ navigation, AddEmployeeForm }: Props) {
+export function AddCustomerScreen({ navigation, AddCustomerForm }: Props) {
   const businessContext = useBusinessContext();
 
   if (!businessContext) return null;
 
   return (
     <div style={{ paddingInline: '2rem', paddingBlock: '2rem' }}>
-      <AddEmployeeForm
+      <AddCustomerForm
         businessId={businessContext.businessId}
         onSuccess={() => navigation.goBack()}
         onCancel={() => navigation.goBack()}

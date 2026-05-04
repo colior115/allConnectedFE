@@ -79,6 +79,28 @@
     "invalidName": "Must be at least 2 characters (letters only)",
     "invalidPhone": "Enter a valid phone number (min 7 digits)"
   },
+  "customer": {
+    "add": "Add",
+    "adding": "Adding…",
+    "addCustomer": "Add Customer",
+    "name": "Name",
+    "type": "Type",
+    "phone": "Phone",
+    "address": "Address",
+    "individual": "Individual",
+    "business": "Business",
+    "nameRequired": "Name is required",
+    "listTitle": "Customers",
+    "viewerTitle": "Customer Details",
+    "searchPlaceholder": "Search customers…",
+    "noCustomers": "No customers found",
+    "errorList": "Failed to load customers",
+    "errorDetails": "Failed to load customer details",
+    "colName": "Name",
+    "colType": "Type",
+    "colEmail": "Email",
+    "colPhone": "Phone"
+  },
   "noPermission": {
     "title": "Access Denied",
     "message": "You don't have permission to view this page."

@@ -1,16 +1,16 @@
 import type { EntryPoint } from 'repluggable';
 import Dashboard from '../../../assets/images/icons/dashboard.svg?react';
 import { AuthFlowsAPI } from '../../auth-package';
-import { EmployeeUIAPI } from '../../employee-package';
+import { AddEmployeeScreen, EmployeeUIAPI } from '../../employee-package';
 import { MainViewInfraAPI } from '../../main-view-package';
 import { ScreensInfraAPI } from '../../screens-package';
+import type { ScreenWithNavigationProps } from '../../screens-package';
 import { BusinessContextInfraAPI } from '../apis/businessContextInfraAPI';
 import { BusinessDataServiceAPI } from '../apis/businessDataServiceAPI';
 import { createBusinessContextInfraAPI } from '../apis/createBusinessContextInfraAPI';
 import { createBusinessDataServiceAPI } from '../apis/createBusinessDataServiceAPI';
 import { BusinessSidebarHeader } from '../components/BusinessSidebarHeader';
-import { BusinessProvider } from '../context/BusinessContext';
-import { AddEmployeeScreen } from '../screens/AddEmployeeScreen';
+import { BusinessProvider, useBusinessContext } from '../context/BusinessContext';
 import { BusinessPickerScreen } from '../screens/BusinessPickerScreen';
 import { DashboardScreen } from '../screens/DashboardScreen';
 import { NoPermissionScreen } from '../screens/NoPermissionScreen';
@@ -114,16 +114,23 @@ export const BusinessPackage: EntryPoint[] = [
         ),
       });
 
-      screensAPI.contributeScreen(shell, {
-        name: 'AddEmployee',
-        screen: ({ navigation }) => (
+      function AddEmployeeScreenWrapper({ navigation }: ScreenWithNavigationProps) {
+        const businessContext = useBusinessContext();
+        if (!businessContext) return null;
+        return (
           <BaseScreen navigation={navigation} titleKey="dashboard.addEmployee">
             <AddEmployeeScreen
               navigation={navigation}
               AddEmployeeForm={employeeUIAPI.components.AddEmployeeForm}
+              businessId={businessContext.businessId}
             />
           </BaseScreen>
-        ),
+        );
+      }
+
+      screensAPI.contributeScreen(shell, {
+        name: 'AddEmployee',
+        screen: AddEmployeeScreenWrapper,
       });
 
       screensAPI.contributeScreen(shell, {

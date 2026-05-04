@@ -79,6 +79,28 @@
     "invalidName": "חייב להכיל לפחות 2 תווים (אותיות בלבד)",
     "invalidPhone": "יש להזין מספר טלפון תקין (לפחות 7 ספרות)"
   },
+  "customer": {
+    "add": "הוסף",
+    "adding": "מוסיף…",
+    "addCustomer": "הוסף לקוח",
+    "name": "שם",
+    "type": "סוג",
+    "phone": "טלפון",
+    "address": "כתובת",
+    "individual": "יחיד",
+    "business": "עסק",
+    "nameRequired": "שם הוא שדה חובה",
+    "listTitle": "לקוחות",
+    "viewerTitle": "פרטי לקוח",
+    "searchPlaceholder": "חיפוש לקוחות…",
+    "noCustomers": "לא נמצאו לקוחות",
+    "errorList": "טעינת לקוחות נכשלה",
+    "errorDetails": "טעינת פרטי לקוח נכשלה",
+    "colName": "שם",
+    "colType": "סוג",
+    "colEmail": "אימייל",
+    "colPhone": "טלפון"
+  },
   "noPermission": {
     "title": "גישה נדחתה",
     "message": "אין לך הרשאה לצפות בדף זה."
