@@ -1,12 +1,14 @@
 import type { EntryPoint } from 'repluggable';
 import CustomersIcon from '../../../assets/images/icons/employees.svg?react';
 import { AllConnectedServerSdkAPI } from '../../../common-services';
+import { AddEntityScreen } from '../../../components';
+import { useBusinessContext } from '../../business-package';
 import { ScreensInfraAPI } from '../../screens-package';
+import type { ScreenWithNavigationProps } from '../../screens-package';
 import { createCustomerDataServiceAPI } from '../apis/createCustomerDataServiceAPI';
 import { createCustomerUIAPI } from '../apis/createCustomerUIAPI';
 import { CustomerDataServiceAPI } from '../apis/customerDataServiceAPI';
 import { CustomerUIAPI } from '../apis/customerUIAPI';
-import { AddCustomerScreen } from '../screens/AddCustomerScreen';
 import { CustomersListScreen } from '../screens/CustomersListScreen';
 import { CustomerViewerScreen } from '../screens/CustomerViewerScreen';
 
@@ -81,16 +83,23 @@ export const CustomerPackage: EntryPoint[] = [
         ),
       });
 
-      screensAPI.contributeScreen(shell, {
-        name: 'AddCustomer',
-        screen: ({ navigation }) => (
+      function AddCustomerScreenWrapper({ navigation }: ScreenWithNavigationProps) {
+        const businessContext = useBusinessContext();
+        if (!businessContext) return null;
+        return (
           <BaseScreen navigation={navigation} titleKey="customer.addCustomer">
-            <AddCustomerScreen
+            <AddEntityScreen
               navigation={navigation}
-              AddCustomerForm={customerUIAPI.components.AddCustomerForm}
+              FormComponent={customerUIAPI.components.AddCustomerForm}
+              businessId={businessContext.businessId}
             />
           </BaseScreen>
-        ),
+        );
+      }
+
+      screensAPI.contributeScreen(shell, {
+        name: 'AddCustomer',
+        screen: AddCustomerScreenWrapper,
       });
     },
   },

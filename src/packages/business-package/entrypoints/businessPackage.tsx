@@ -1,7 +1,8 @@
 import type { EntryPoint } from 'repluggable';
 import Dashboard from '../../../assets/images/icons/dashboard.svg?react';
 import { AuthFlowsAPI } from '../../auth-package';
-import { AddEmployeeScreen, EmployeeUIAPI } from '../../employee-package';
+import { EmployeeUIAPI } from '../../employee-package';
+import { AddEntityScreen } from '../../../components';
 import { MainViewInfraAPI } from '../../main-view-package';
 import { ScreensInfraAPI } from '../../screens-package';
 import type { ScreenWithNavigationProps } from '../../screens-package';
@@ -119,9 +120,9 @@ export const BusinessPackage: EntryPoint[] = [
         if (!businessContext) return null;
         return (
           <BaseScreen navigation={navigation} titleKey="dashboard.addEmployee">
-            <AddEmployeeScreen
+            <AddEntityScreen
               navigation={navigation}
-              AddEmployeeForm={employeeUIAPI.components.AddEmployeeForm}
+              FormComponent={employeeUIAPI.components.AddEmployeeForm}
               businessId={businessContext.businessId}
             />
           </BaseScreen>

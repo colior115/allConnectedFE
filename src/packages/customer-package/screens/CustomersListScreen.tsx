@@ -1,9 +1,7 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loader, Pagination, Text } from '../../../components';
-import { CustomersToolbox } from '../components/CustomersToolbox';
-import { colors } from '../../../styles/theme/colors';
-import { typography } from '../../../styles/theme/typography';
+import { EntityTable, Toolbox } from '../../../components';
+import { useEntityList } from '../../../hooks';
 import { useBusinessContext } from '../../business-package';
 import type { ScreenWithNavigationProps } from '../../screens-package';
 import type { CustomerDataServiceAPI } from '../apis/customerDataServiceAPI';
@@ -15,105 +13,53 @@ interface Props extends ScreenWithNavigationProps {
   getCustomers: CustomerDataServiceAPI['getCustomers'];
 }
 
-const thStyle: CSSProperties = {
-  textAlign: 'start',
-  padding: '0.625rem 1rem',
-  fontFamily: typography.fontFamily,
-  fontSize: typography.small.fontSize,
-  fontWeight: 600,
-  color: colors.textSecondary,
-  borderBlockEnd: `1px solid ${colors.border}`,
-  whiteSpace: 'nowrap',
-};
-
-const tdStyle: CSSProperties = {
-  padding: '0.75rem 1rem',
-  fontFamily: typography.fontFamily,
-  fontSize: typography.body.fontSize,
-  color: colors.textPrimary,
-  borderBlockEnd: `1px solid ${colors.border}`,
-};
-
 export function CustomersListScreen({ navigation, getCustomers }: Props) {
   const { t } = useTranslation();
   const businessContext = useBusinessContext();
-  const [customers, setCustomers] = useState<CustomerListItem[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    if (!businessContext?.businessId) return;
-    let cancelled = false;
-    getCustomers(businessContext.businessId, { page, limit: PAGE_LIMIT, search: search || undefined })
-      .then(({ data, total: tot }) => { if (!cancelled) { setCustomers(data ?? []); setTotal(tot ?? 0); setError(null); } })
-      .catch(() => { if (!cancelled) setError(t('customer.errorList')); })
-      .finally(() => { if (!cancelled) setLoading(false); });
-    return () => { cancelled = true; };
-  }, [businessContext?.businessId, page, search, getCustomers, t]);
+  const fetchFn = useCallback(
+    (businessId: string, params: { page: number; limit: number; search?: string }) =>
+      getCustomers(businessId, params),
+    [getCustomers],
+  );
 
-  const handleSearch = (value: string) => {
-    setLoading(true);
-    setSearch(value);
-    setPage(1);
-  };
+  const { items, total, loading, error, page, handleSearch, handlePageChange } =
+    useEntityList<CustomerListItem>({
+      businessId: businessContext?.businessId,
+      fetchFn,
+      limit: PAGE_LIMIT,
+      errorKey: 'customer.errorList',
+    });
 
-  const handlePageChange = (newPage: number) => {
-    setLoading(true);
-    setPage(newPage);
-  };
+  const columns = [
+    { key: 'name',  header: t('customer.colName'),  render: (c: CustomerListItem) => c.name },
+    { key: 'type',  header: t('customer.colType'),  render: (c: CustomerListItem) => c.individual ? t('customer.individual') : t('customer.business') },
+    { key: 'email', header: t('customer.colEmail'), render: (c: CustomerListItem) => c.email ?? '—' },
+    { key: 'phone', header: t('customer.colPhone'), render: (c: CustomerListItem) => c.phone ?? '—' },
+  ];
 
   return (
     <div style={{ paddingInline: '2rem', paddingBlock: '2rem' }}>
       <div style={{ marginBlockEnd: '1.5rem' }}>
-        <CustomersToolbox navigation={navigation} onSearch={handleSearch} />
+        <Toolbox
+          searchPlaceholder={t('customer.searchPlaceholder')}
+          addButtonLabel={t('customer.addCustomer')}
+          onSearch={handleSearch}
+          onAdd={() => navigation.navigate('AddCustomer')}
+        />
       </div>
-
-      {loading && (
-        <div style={{ display: 'flex', justifyContent: 'center', paddingBlock: '3rem' }}>
-          <Loader />
-        </div>
-      )}
-
-      {error && <Text color={colors.error}>{error}</Text>}
-
-      {!loading && !error && customers.length === 0 && (
-        <Text color={colors.textSecondary}>{t('customer.noCustomers')}</Text>
-      )}
-
-      {!loading && !error && customers.length > 0 && (
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                <th style={thStyle}>{t('customer.colName')}</th>
-                <th style={thStyle}>{t('customer.colType')}</th>
-                <th style={thStyle}>{t('customer.colEmail')}</th>
-                <th style={thStyle}>{t('customer.colPhone')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {customers.map((customer) => (
-                <tr
-                  key={customer.id}
-                  onClick={() => navigation.navigate('CustomerViewer', customer)}
-                  style={{ cursor: 'pointer' }}
-                  onMouseEnter={e => (e.currentTarget.style.backgroundColor = colors.background)}
-                  onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
-                >
-                  <td style={tdStyle}>{customer.name}</td>
-                  <td style={tdStyle}>{customer.individual ? t('customer.individual') : t('customer.business')}</td>
-                  <td style={tdStyle}>{customer.email ?? '—'}</td>
-                  <td style={tdStyle}>{customer.phone ?? '—'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination page={page} total={total} limit={PAGE_LIMIT} onChange={handlePageChange} />
-        </div>
-      )}
+      <EntityTable
+        columns={columns}
+        items={items}
+        total={total}
+        page={page}
+        limit={PAGE_LIMIT}
+        loading={loading}
+        error={error}
+        emptyMessage={t('customer.noCustomers')}
+        onPageChange={handlePageChange}
+        onRowClick={cust => navigation.navigate('CustomerViewer', cust)}
+      />
     </div>
   );
 }
